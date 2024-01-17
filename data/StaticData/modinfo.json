@@ -1,0 +1,12 @@
+[
+    {
+        "type": "MOD_INFO",
+        "id": "ench",
+        "name": "Enchantment",
+        "authors": ["zwa73"],
+        "maintainers": ["zwa73"],
+        "description": "Enchantment",
+        "category": "other",
+        "dependencies": ["dda","aftershock","magiclysm"]
+    }
+]

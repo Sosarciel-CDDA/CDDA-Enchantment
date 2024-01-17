@@ -125,7 +125,7 @@ export async function knockback(dm:DataManager) {
             .filter((sublvlobj)=>sublvlobj.ench.id!=ench.id)
             .map((subelvlobj)=>subelvlobj.ench.id))
     })
-    dm.addStaticData(out,"common_resource","ench",enchId);
+    dm.addStaticData(out,"ench",enchId);
     return enchSet;
 }
 
@@ -212,5 +212,5 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
     }
     out.push(EnchTestTool);
 
-    dm.addStaticData(out,"common_resource","ench","EnchTest");
+    dm.addStaticData(out,"EnchTest");
 }
