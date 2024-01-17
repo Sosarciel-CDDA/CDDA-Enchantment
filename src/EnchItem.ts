@@ -1,19 +1,20 @@
 import { ToolQuality, ToolQualityID } from "cdda-schema";
-import { DataManager } from "@src/DataManager";
 import { JObject } from "@zwa73/utils";
 import { Eoc, Tool, ToolID, ItemToolQuality, EocID, Generic, FlagID, Flag, EocEffect, CondObj, BoolObj, Spell, DamageTypeID } from "cdda-schema";
-import { CCharHook } from "CnpcEvent";
-import { genActEoc, genEOCID, genGenericID, genSpellID } from "ModDefine";
-import { CON_SPELL_FLAG } from "StaticData";
+import { CharHook, DataManager, EventManager } from "cdda-event";
+import { EMDef } from "./EMDefine";
+
+/**用于必定成功的控制法术的flags */
+export const CON_SPELL_FLAG = ["SILENT", "NO_HANDS", "NO_LEGS", "NO_FAIL","NO_EXPLOSION_SFX"] as const;
 
 
 /**手持触发 */
-function genWieldTrigger(dm:DataManager,flagId:FlagID,hook:CCharHook,effects:EocEffect[],condition?:BoolObj){
-    const eoc = genActEoc(`${flagId}_WieldTigger`,effects,{and:[
+function genWieldTrigger(dm:DataManager,flagId:FlagID,hook:CharHook,effects:EocEffect[],condition?:BoolObj){
+    const eoc = EMDef.genActEoc(`${flagId}_WieldTigger`,effects,{and:[
         {u_has_wielded_with_flag:flagId},
         ...(condition ? [condition] : [])
     ]});
-    dm.addEvent(hook,0,eoc);
+    dm.addInvokeEoc(hook,0,eoc);
     return eoc;
 }
 
@@ -97,7 +98,7 @@ export async function knockback(dm:DataManager) {
             info:`<color_white>[${subName}]</color> 这件物品可以造成 ${i} 点击退伤害`,
         };
         const tspell:Spell = {
-            id:genSpellID(subid),
+            id:EMDef.genSpellID(subid),
             type:"SPELL",
             flags:[...CON_SPELL_FLAG],
             min_damage:i,
@@ -143,17 +144,17 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
     const NONEEocId = "EnchTestNone" as EocID;
 
     const enchTestList = [
-        [genActEoc("EnchTestAdd",[{
+        [EMDef.genActEoc("EnchTestAdd",[{
             run_eoc_selector:[...flatEnchSet.map((ench)=>enchEID(ench,"add")),NONEEocId],
             names:[...flatEnchSet.map((ench)=>ench.name as string),"算了"],
             hide_failing:true
         }]),"添加附魔"],
-        [genActEoc("EnchTestRemove",[{
+        [EMDef.genActEoc("EnchTestRemove",[{
             run_eoc_selector:[...flatEnchSet.map((ench)=>enchEID(ench,"remove")),NONEEocId],
             names:[...flatEnchSet.map((ench)=>ench.name as string),"算了"],
             hide_failing:true
         }]),"移除附魔"],
-        [genActEoc(NONEEocId,[],undefined,true),"取消调试"],
+        [EMDef.genActEoc(NONEEocId,[],undefined,true),"取消调试"],
     ] as const;
     out.push(...enchTestList.map((item)=>item[0]));
 
@@ -161,7 +162,7 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
     //添加附魔子eoc
     enchSets.forEach((enchset)=>{
         enchset.lvl.forEach((lvlobj)=>{
-            out.push(genActEoc(enchEID(lvlobj.ench,"add"),[
+            out.push(EMDef.genActEoc(enchEID(lvlobj.ench,"add"),[
                 {npc_set_flag:lvlobj.ench.id},
                 {npc_set_flag:enchset.main.id}
             ],{not:{npc_has_flag:enchset.main.id}},true));
@@ -170,7 +171,7 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
     //移除附魔子eoc
     enchSets.forEach((enchset)=>{
         enchset.lvl.forEach((lvlobj)=>{
-            out.push(genActEoc(enchEID(lvlobj.ench,"remove"),[
+            out.push(EMDef.genActEoc(enchEID(lvlobj.ench,"remove"),[
                 {npc_unset_flag:lvlobj.ench.id},
                 {npc_unset_flag:enchset.main.id}
             ],{npc_has_flag:lvlobj.ench.id},true));
@@ -178,7 +179,7 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
     })
 
     const EnchTestTool:Generic = {
-        id:genGenericID("EnchTestTool"),
+        id:EMDef.genGenericID("EnchTestTool"),
         type:"GENERIC",
         name:{str_sp:"附魔调试工具"},
         description:"附魔调试工具",
@@ -192,7 +193,7 @@ export async function enchTest(dm:DataManager,enchSets:EnchSet[]){
             menu_text:"附魔调试",
             effect_on_conditions:[{
                 eoc_type:"ACTIVATION",
-                id:genEOCID("EnchTestTool"),
+                id:EMDef.genEOCID("EnchTestTool"),
                 effect:[{
                     u_run_inv_eocs:"manual",
                     title:"选择需要调试的物品",
