@@ -3,11 +3,11 @@ import { CON_SPELL_FLAG, EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { genWieldTrigger, numToRoman } from "./UtilGener";
-import { EnchSet } from "./EnchInterface";
+import { EnchData } from "./EnchInterface";
 
 
 
-export async function knockback(dm:DataManager) {
+export async function Knockback(dm:DataManager) {
     const enchName = "击退";
     const enchId = "Knockback";
     const maxLvl = 5;
@@ -16,23 +16,25 @@ export async function knockback(dm:DataManager) {
     //构造附魔集
     const mainench:Flag = {
         type:"json_flag",
-        id:enchId as FlagID,
+        id:EMDef.genFlagID(enchId),
         name:enchName,
     };
     out.push(mainench);
-    const enchSet:EnchSet={
+    const enchSet:EnchData={
         main:mainench,
         lvl:[]
     };
     for(let i=1;i<=maxLvl;i++){
         const subid = `${enchId}_${i}`;
         const subName = `${enchName} ${numToRoman(i)}`;
+        //变体ID
         const ench:Flag = {
             type:"json_flag",
-            id:subid as FlagID,
+            id:EMDef.genFlagID(subid),
             name:subName,
             info:`<color_white>[${subName}]</color> 这件物品可以造成 ${i} 点击退伤害`,
         };
+        //触发法术
         const tspell:Spell = {
             id:EMDef.genSpellID(subid),
             type:"SPELL",
@@ -46,14 +48,19 @@ export async function knockback(dm:DataManager) {
             name:`${subName} 附魔触发法术`,
             description: `${subName} 附魔触发法术`
         }
+        //触发eoc
         const teoc = genWieldTrigger(dm,ench.id,"TryMeleeAttack",[
-            {npc_location_variable:{global_val:`_${enchId}_loc`}},
-            {u_cast_spell:{id:tspell.id},loc:{global_val:`_${enchId}_loc`}}
+            {npc_location_variable:{global_val:`${enchId}_loc`}},
+            {u_cast_spell:{id:tspell.id},loc:{global_val:`${enchId}_loc`}}
         ])
+        //加入输出
         out.push(ench,tspell,teoc);
-        enchSet.lvl.push({ench,weight:maxLvl+1-i});
+        enchSet.lvl.push({
+            ench,
+            weight:maxLvl+1-i
+        });
     }
-    //互斥
+    //同附魔互斥
     enchSet.lvl.forEach((lvlobj)=>{
         const ench = lvlobj.ench;
         ench.conflicts = ench.conflicts??[];
