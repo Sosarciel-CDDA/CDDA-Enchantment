@@ -2,7 +2,7 @@ import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { EocID, Flag, Generic } from "cdda-schema";
 import { EMDef } from "@src/EMDefine";
-import { enchEID } from "./Common";
+import { INIT_ENCH_DATA_EOC_ID, enchEID } from "./Common";
 
 
 
@@ -11,7 +11,7 @@ export async function debugItem(dm:DataManager,enchFlagList:Flag[]){
     const NONEEocId = "EnchTestNone" as EocID;
 
     const enchTestList = [
-        [EMDef.genActEoc("EnchTestAdd",[{
+        [EMDef.genActEoc("EnchTestAdd",[{run_eocs:INIT_ENCH_DATA_EOC_ID},{
             run_eoc_selector:[...enchFlagList.map((ench)=>enchEID(ench,"add")),NONEEocId],
             names:[...enchFlagList.map((ench)=>ench.name as string),"算了"],
             hide_failing:true

@@ -16,12 +16,14 @@ export async function Knockback(dm:DataManager) {
     //构造附魔集
     const mainench:Flag = {
         type:"json_flag",
-        id:EMDef.genFlagID(enchId),
+        id:EMDef.genFlagID(`${enchId}_Ench`),
         name:enchName,
     };
     out.push(mainench);
     const enchSet:EnchData={
+        id:enchId,
         main:mainench,
+        category:["weapons"],
         lvl:[]
     };
     for(let i=1;i<=maxLvl;i++){
@@ -30,13 +32,13 @@ export async function Knockback(dm:DataManager) {
         //变体ID
         const ench:Flag = {
             type:"json_flag",
-            id:EMDef.genFlagID(subid),
+            id:EMDef.genFlagID(`${subid}_Ench`),
             name:subName,
             info:`<color_white>[${subName}]</color> 这件物品可以造成 ${i} 点击退伤害`,
         };
         //触发法术
         const tspell:Spell = {
-            id:EMDef.genSpellID(subid),
+            id:EMDef.genSpellID(`${subid}_Trigger`),
             type:"SPELL",
             flags:[...CON_SPELL_FLAG],
             min_damage:i,
@@ -60,7 +62,7 @@ export async function Knockback(dm:DataManager) {
             weight:maxLvl+1-i
         });
     }
-    //同附魔互斥
+    //互斥附魔flag
     enchSet.lvl.forEach((lvlobj)=>{
         const ench = lvlobj.ench;
         ench.conflicts = ench.conflicts??[];
