@@ -1,6 +1,6 @@
 import { EMDef } from "@src/EMDefine";
 import { CharHook, DataManager } from "cdda-event";
-import { BoolObj, EocEffect, FlagID } from "cdda-schema";
+import { BoolObj, Color, EocEffect, Flag, FlagID } from "cdda-schema";
 import { EnchData } from "./EnchInterface";
 
 
@@ -43,7 +43,7 @@ export function numToRoman(num:number) {
 }
 
 /**添加同附魔lvl变体的基础互斥 */
-export function baseConfilcts(enchData:EnchData){
+export function genBaseConfilcts(enchData:EnchData){
     enchData.lvl.forEach((lvlobj)=>{
         const ench = lvlobj.ench;
         ench.conflicts = ench.conflicts??[];
@@ -51,4 +51,18 @@ export function baseConfilcts(enchData:EnchData){
             .filter((sublvlobj)=>sublvlobj.ench.id!=ench.id)
             .map((subelvlobj)=>subelvlobj.ench.id))
     })
+}
+
+/**生成主附魔flag */
+export function genMainFlag(enchId:string,enchName:string):Flag{
+    return {
+        type:"json_flag",
+        id:EMDef.genFlagID(`${enchId}_Ench`),
+        name:enchName,
+    }
+}
+
+/**生成附魔说明 */
+export function genEnchInfo(color:Color,name:string,desc:string){
+    return `<color_${color}>[${name}]</color> ${desc}`;
 }

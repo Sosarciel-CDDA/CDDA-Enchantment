@@ -30,5 +30,9 @@ export type EnchData = {
          * 未定义则不计入缓存
          */
         intensity?:number;
+        /**附魔点数  
+         * 未定义则为0  
+         */
+        point?:number;
     }[];
 }

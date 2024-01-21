@@ -6,6 +6,14 @@ import { AnyObj, BoolObj, EocEffect, EocID, Flag, NumObj } from "cdda-schema";
 
 
 
+/**默认的最大附魔点数 */
+export const MAX_ENCH_POINT = 100;
+/**最大附魔尝试次数 */
+export const MAX_ENCH_COUNT = 10;
+/**附魔物品生成 one_in 概率 */
+export const ENCH_ONE_IN    = 10;
+
+
 /**通用eoc的id */
 export function enchEID(flag:Flag,t:"add"|"remove"){
     return EMDef.genEOCID(`${flag.id}_${t}`);
@@ -15,12 +23,17 @@ export function enchInsVar(ench:EnchData,t:"u"|"n"){
     return `${t}_${ench.id}`;
 }
 
-/**随机鉴定EocID */
+/**随机鉴定EocID  
+ * u为角色 n为物品  
+ */
 export const IDENTIFY_EOC_ID = EMDef.genEOCID("IdentifyEnch");
-/**刷新附魔缓存EocID */
+/**刷新附魔缓存EocID  
+ * u为角色 n不存在  
+ */
 export const UPGRADE_ENCH_CACHE_EOC_ID = EMDef.genEOCID("UpgradeEnchCache");
 /**初始化附魔数据  
  * 在尝试添加附魔前需运行  
+ * u为角色 n不存在  
  */
 export const INIT_ENCH_DATA_EOC_ID = EMDef.genEOCID("InitEnchData");
 
@@ -41,7 +54,8 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         data.lvl.forEach((lvlobj)=>{
             out.push(EMDef.genActEoc(enchEID(lvlobj.ench,"add"),[
                 {npc_set_flag:lvlobj.ench.id},
-                {npc_set_flag:data.main.id}
+                {npc_set_flag:data.main.id},
+                {math:["n_enchPoint","+=",`${lvlobj.point}`]}
             ],{and:[
                 //排除冲突
                 {not:{or:[
@@ -77,10 +91,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     })
 
     //鉴定附魔Eoc
-    const enchPointMax  = 10;//最大点数
-    const eachMax       = 10;//最大尝试次数
-    const enchChange    = 2 ;//附魔one_in概率
-    const weightSum     = enchDataList.reduce((enchsum,ench)=>
+    const weightSum = enchDataList.reduce((enchsum,ench)=>
         enchsum + ench.lvl.reduce((lvlobjsum,lvlobj)=>
             lvlobj.weight + lvlobjsum, 0), 0);//总附魔权重
     const noneWeight   = weightSum/10;//空附魔权重
@@ -94,9 +105,9 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     ]}
     const subeocid = EMDef.genEOCID('IdentifyEnch_each');
     const identifyEnchEoc = EMDef.genActEoc(IDENTIFY_EOC_ID,[
-        {if:{one_in_chance:enchChange},
+        {if:{one_in_chance:ENCH_ONE_IN},
         then:[
-            {math:["_eachCount","=",`${eachMax}`]},
+            {math:["_eachCount","=",`${MAX_ENCH_COUNT}`]},
             ...(VaildEnchCategoryList.map((cate)=>{
                 const eff:EocEffect = {run_eocs:{
                     id:`${subeocid}_${cate}` as EocID,
@@ -108,14 +119,14 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                     ],
                     condition:{and:[
                         {math:["_eachCount",">",`0`]},
-                        {math:["n_enchPoint","<",`${enchPointMax}`]}
+                        {math:["n_enchPoint","<",`${MAX_ENCH_POINT}`]}
                     ]}
                 }}
                 return eff;
             })),
             {u_message:"你从一件装备上发现了附魔",type:"good"},
         ]},
-        {u_message:"你了解了一件装备"},
+        {u_message:"一件装备的详细属性被揭示了",type:"good"},
         {math:["n_isIdentifyEnch","=","1"]},
     ],identifyCond,true);
     const noneEnchEoc = EMDef.genActEoc("NoneEnch",[]);
@@ -158,10 +169,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     const upgradeEnchCache = EMDef.genActEoc(UPGRADE_ENCH_CACHE_EOC_ID,[
         {run_eocs:clearCacheEoc.id},
         {u_run_inv_eocs:"all",
-        search_data:[{wielded_only:true}],
-        true_eocs:sumCacheEoc.id},
-        {u_run_inv_eocs:"all",
-        search_data:[{worn_only:true}],
+        search_data:[{wielded_only:true},{worn_only:true}],
         true_eocs:sumCacheEoc.id},
     ],undefined,true);
     dm.addInvokeEoc("WearItem"    ,1,upgradeEnchCache);

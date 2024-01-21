@@ -2,8 +2,8 @@ import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } 
 import { CON_SPELL_FLAG, EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { baseConfilcts, genWieldTrigger, numToRoman } from "./UtilGener";
-import { EnchData } from "./EnchInterface";
+import { genBaseConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
+import { EnchData } from "../EnchInterface";
 
 
 
@@ -14,18 +14,13 @@ export async function Knockback(dm:DataManager) {
     const out:JObject[]=[];
 
     //构造附魔集
-    const mainench:Flag = {
-        type:"json_flag",
-        id:EMDef.genFlagID(`${enchId}_Ench`),
-        name:enchName,
-    };
-    out.push(mainench);
     const enchData:EnchData={
         id:enchId,
-        main:mainench,
+        main:genMainFlag(enchId,enchName),
         category:["weapons"],
         lvl:[]
     };
+    out.push(enchData.main);
     //构造等级变体
     for(let i=1;i<=maxLvl;i++){
         const subid = `${enchId}_${i}`;
@@ -35,7 +30,7 @@ export async function Knockback(dm:DataManager) {
             type:"json_flag",
             id:EMDef.genFlagID(`${subid}_Ench`),
             name:subName,
-            info:`<color_white>[${subName}]</color> 这件物品可以造成 ${i} 点击退伤害`,
+            info:genEnchInfo("white",subName,`这件物品可以造成 ${i} 点击退伤害`),
         };
         //触发法术
         const tspell:Spell = {
@@ -60,11 +55,12 @@ export async function Knockback(dm:DataManager) {
         out.push(ench,tspell,teoc);
         enchData.lvl.push({
             ench,
-            weight:maxLvl+1-i
+            weight:maxLvl+1-i,
+            point:i*5,
         });
     }
     //互斥附魔flag
-    baseConfilcts(enchData);
+    genBaseConfilcts(enchData);
     dm.addStaticData(out,"ench",enchId);
     return enchData;
 }
