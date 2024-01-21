@@ -1,6 +1,7 @@
 import { EMDef } from "@src/EMDefine";
 import { CharHook, DataManager } from "cdda-event";
 import { BoolObj, EocEffect, FlagID } from "cdda-schema";
+import { EnchData } from "./EnchInterface";
 
 
 
@@ -39,4 +40,15 @@ export function numToRoman(num:number) {
         }
     }
     return roman;
+}
+
+/**添加同附魔lvl变体的基础互斥 */
+export function baseConfilcts(enchData:EnchData){
+    enchData.lvl.forEach((lvlobj)=>{
+        const ench = lvlobj.ench;
+        ench.conflicts = ench.conflicts??[];
+        ench.conflicts.push(...enchData.lvl
+            .filter((sublvlobj)=>sublvlobj.ench.id!=ench.id)
+            .map((subelvlobj)=>subelvlobj.ench.id))
+    })
 }

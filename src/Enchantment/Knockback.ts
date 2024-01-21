@@ -2,7 +2,7 @@ import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } 
 import { CON_SPELL_FLAG, EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genWieldTrigger, numToRoman } from "./UtilGener";
+import { baseConfilcts, genWieldTrigger, numToRoman } from "./UtilGener";
 import { EnchData } from "./EnchInterface";
 
 
@@ -20,12 +20,13 @@ export async function Knockback(dm:DataManager) {
         name:enchName,
     };
     out.push(mainench);
-    const enchSet:EnchData={
+    const enchData:EnchData={
         id:enchId,
         main:mainench,
         category:["weapons"],
         lvl:[]
     };
+    //构造等级变体
     for(let i=1;i<=maxLvl;i++){
         const subid = `${enchId}_${i}`;
         const subName = `${enchName} ${numToRoman(i)}`;
@@ -57,19 +58,13 @@ export async function Knockback(dm:DataManager) {
         ])
         //加入输出
         out.push(ench,tspell,teoc);
-        enchSet.lvl.push({
+        enchData.lvl.push({
             ench,
             weight:maxLvl+1-i
         });
     }
     //互斥附魔flag
-    enchSet.lvl.forEach((lvlobj)=>{
-        const ench = lvlobj.ench;
-        ench.conflicts = ench.conflicts??[];
-        ench.conflicts.push(...enchSet.lvl
-            .filter((sublvlobj)=>sublvlobj.ench.id!=ench.id)
-            .map((subelvlobj)=>subelvlobj.ench.id))
-    })
+    baseConfilcts(enchData);
     dm.addStaticData(out,"ench",enchId);
-    return enchSet;
+    return enchData;
 }

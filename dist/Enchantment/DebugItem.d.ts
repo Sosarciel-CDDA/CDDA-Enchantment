@@ -1,3 +1,3 @@
 import { DataManager } from "cdda-event";
-import { EnchSet } from "./EnchInterface";
-export declare function debugItem(dm: DataManager, enchSets: EnchSet[]): Promise<void>;
+import { Flag } from "cdda-schema";
+export declare function debugItem(dm: DataManager, enchFlagList: Flag[]): Promise<void>;

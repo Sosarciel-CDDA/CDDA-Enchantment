@@ -1,8 +1,8 @@
 import { DataManager } from "cdda-event";
-import { EnchData, VaildEnchCategoryList } from "./EnchInterface";
+import { EnchData, VaildEnchCategory, VaildEnchCategoryList } from "./EnchInterface";
 import { JObject } from "@zwa73/utils";
 import { EMDef } from "@src/EMDefine";
-import { AnyObj, EocEffect, EocID, Flag } from "cdda-schema";
+import { AnyObj, BoolObj, EocEffect, EocID, Flag, NumObj } from "cdda-schema";
 
 
 
@@ -19,7 +19,9 @@ export function enchInsVar(ench:EnchData,t:"u"|"n"){
 export const IDENTIFY_EOC_ID = EMDef.genEOCID("IdentifyEnch");
 /**刷新附魔缓存EocID */
 export const UPGRADE_ENCH_CACHE_EOC_ID = EMDef.genEOCID("UpgradeEnchCache");
-/**初始化附魔数据 */
+/**初始化附魔数据  
+ * 在尝试添加附魔前需运行  
+ */
 export const INIT_ENCH_DATA_EOC_ID = EMDef.genEOCID("InitEnchData");
 
 export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
@@ -50,9 +52,15 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                 //符合类型
                 {or:[
                     ...(data.category.map((t)=>({
-                        compare_string:[t,{npc_val:"enchCategory"}] as [string,AnyObj]
+                        npc_has_var: "enchCategory",
+                        value: t,
                     })))
-                ]}
+                ]},
+                //排除自体护甲与生化武器
+                {not:{or:[
+                    {npc_has_flag:"BIONIC_WEAPON"   },//生化武器
+                    {npc_has_flag:"INTEGRATED"      },//自体护甲
+                ]}}
             ]},true));
         });
     })
@@ -76,58 +84,90 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         enchsum + ench.lvl.reduce((lvlobjsum,lvlobj)=>
             lvlobj.weight + lvlobjsum, 0), 0);//总附魔权重
     const noneWeight   = weightSum/10;//空附魔权重
-    const weightList:[EocID,number][] = [];
+    const weightListMap:Record<VaildEnchCategory,[EocID,NumObj][]> = {
+        "armor":[],
+        "weapons":[]
+    };
+    const identifyCond:BoolObj = {and:[
+        {math:["n_isIdentifyEnch","!=","1"]},
+        {or:VaildEnchCategoryList.map((cate)=>({npc_has_var:"enchCategory",value:cate}))}
+    ]}
     const subeocid = EMDef.genEOCID('IdentifyEnch_each');
     const identifyEnchEoc = EMDef.genActEoc(IDENTIFY_EOC_ID,[
         {if:{one_in_chance:enchChange},
         then:[
             {math:["_eachCount","=",`${eachMax}`]},
-            {run_eocs:EMDef.genActEoc(subeocid,[
-                {weighted_list_eocs:weightList},
-                {math:["_eachCount","-=","1"]},
-                {run_eocs:subeocid}
-            ],{and:[
-                {math:["_eachCount",">",`0`]},
-                {math:["n_enchPoint","<",`${enchPointMax}`]}
-            ]},true)},
+            ...(VaildEnchCategoryList.map((cate)=>{
+                const eff:EocEffect = {run_eocs:{
+                    id:`${subeocid}_${cate}` as EocID,
+                    eoc_type:"ACTIVATION",
+                    effect:[
+                        {weighted_list_eocs:weightListMap[cate]},
+                        {math:["_eachCount","-=","1"]},
+                        {run_eocs:`${subeocid}_${cate}` as EocID}
+                    ],
+                    condition:{and:[
+                        {math:["_eachCount",">",`0`]},
+                        {math:["n_enchPoint","<",`${enchPointMax}`]}
+                    ]}
+                }}
+                return eff;
+            })),
+            {u_message:"你从一件装备上发现了附魔",type:"good"},
         ]},
-        {math:["n_isIdentifyEnch","=","1"]}
-    ],{math:["n_isIdentifyEnch","!=","1"]},true);
+        {u_message:"你了解了一件装备"},
+        {math:["n_isIdentifyEnch","=","1"]},
+    ],identifyCond,true);
     const noneEnchEoc = EMDef.genActEoc("NoneEnch",[]);
-    enchDataList.forEach((ench)=>
-        ench.lvl.forEach((lvlobj)=>
-            weightList.push([enchEID(lvlobj.ench,"add"),lvlobj.weight])))
-    weightList.push([noneEnchEoc.id,noneWeight]);
-    out.push(identifyEnchEoc,noneEnchEoc);
 
+    for(const enchCate of VaildEnchCategoryList){
+        enchDataList.forEach((ench)=>{
+            const wlist = weightListMap[enchCate];
+            if(ench.category.includes(enchCate)){
+                ench.lvl.forEach((lvlobj)=>
+                    wlist.push([enchEID(lvlobj.ench,"add"),{math:[`${lvlobj.weight}`]}]))
+                wlist.push([noneEnchEoc.id,{math:[`${noneWeight}`]}]);
+            }
+        })
+    }
+    out.push(identifyEnchEoc,noneEnchEoc);
 
     //累计附魔缓存
     const sumCacheEffects:EocEffect[] = [];
     enchDataList.forEach((ench)=>{
-        ench.lvl.forEach((lvlobj)=>
-            sumCacheEffects.push({
-                if:{npc_has_flag:lvlobj.ench.id},
-                then:[{math:[enchInsVar(ench,"n"),"+=",`${lvlobj.intensity}`]}]
-            }))
+        ench.lvl.forEach((lvlobj)=>{
+            if(lvlobj.intensity!=null){
+                sumCacheEffects.push({
+                    if:{npc_has_flag:lvlobj.ench.id},
+                    then:[{math:[enchInsVar(ench,"u"),"+=",`${lvlobj.intensity}`]}]
+                })
+            }
+        })
     })
-    const sumCacheEoc = EMDef.genActEoc("SumEnchCache",sumCacheEffects);
+    const sumCacheEoc = EMDef.genActEoc("SumEnchCache",[
+        //{u_message:"sumCacheEffects"},
+        ...sumCacheEffects
+    ]);
     out.push(sumCacheEoc);
     //清理附魔缓存
     const clearCacheEoc = EMDef.genActEoc("ClearEnchCache",
-        enchDataList.map((ench)=>({math:[enchInsVar(ench,"n"),"=","0"]}))
+        enchDataList.map((ench)=>({math:[enchInsVar(ench,"u"),"=","0"]}))
     );
     out.push(clearCacheEoc);
     //刷新附魔缓存eoc
     const upgradeEnchCache = EMDef.genActEoc(UPGRADE_ENCH_CACHE_EOC_ID,[
         {run_eocs:clearCacheEoc.id},
         {u_run_inv_eocs:"all",
-        search_data:[{worn_only:true},{wielded_only:true}],
-        true_eocs:sumCacheEoc.id}
+        search_data:[{wielded_only:true}],
+        true_eocs:sumCacheEoc.id},
+        {u_run_inv_eocs:"all",
+        search_data:[{worn_only:true}],
+        true_eocs:sumCacheEoc.id},
     ],undefined,true);
+    dm.addInvokeEoc("WearItem"    ,1,upgradeEnchCache);
+    dm.addInvokeEoc("WieldItemRaw",1,upgradeEnchCache);
+    dm.addInvokeEoc("SlowUpdate"  ,1,upgradeEnchCache);
     out.push(upgradeEnchCache);
-    dm.addInvokeEoc("WearItem",0,upgradeEnchCache);
-    dm.addInvokeEoc("WieldItem",0,upgradeEnchCache);
-    dm.addInvokeEoc("SlowUpdate",0,upgradeEnchCache);
 
     //初始化附魔数据
     const initeffects:EocEffect[] = (VaildEnchCategoryList.map((t)=>({
@@ -136,13 +176,43 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         true_eocs:{
             id:EMDef.genEOCID(`initEnchData_${t}`),
             eoc_type:"ACTIVATION",
-            effect:[{npc_add_var:"enchCategory",value:t}]
+            effect:[
+                {npc_add_var:"enchCategory",value:t}
+            ]
         }
     })))
     const initEnchData = EMDef.genActEoc(INIT_ENCH_DATA_EOC_ID,[
         ...initeffects
     ],undefined,true);
     out.push(initEnchData);
+
+    //根据缓存添加效果
+    enchDataList.forEach((ench)=>{
+        if(ench.effect!=null){
+            const eff = ench.effect;
+            //触发eoc
+            const teoc = EMDef.genActEoc(`${ench.id}_AddEffect`,[
+                {if:{math:[enchInsVar(ench,"u"),">=","1"]},
+                then:[
+                    //{u_message:ench.id},
+                    {u_add_effect:eff.id,intensity:{math:[enchInsVar(ench,"u")]},duration:"PERMANENT"}
+                ],
+                else:[{u_lose_effect:eff.id}]}
+            ]);
+            dm.addInvokeEoc("WearItem"    ,0,teoc);
+            dm.addInvokeEoc("WieldItemRaw",0,teoc);
+            dm.addInvokeEoc("SlowUpdate"  ,0,teoc);
+            out.push(teoc);
+        }
+    })
+
+    //鉴定穿戴的物品
+    const identifyWear = EMDef.genActEoc("IdentifyEnch_Wear",[
+        {run_eocs:[INIT_ENCH_DATA_EOC_ID,IDENTIFY_EOC_ID]},
+    ],{math:["n_isIdentifyEnch","!=","1"]})
+    dm.addInvokeEoc("WearItem" ,2,identifyWear);
+    dm.addInvokeEoc("WieldItem",2,identifyWear);
+    out.push(identifyWear);
 
     dm.addStaticData(out,"Common");
     return enchFlagList;

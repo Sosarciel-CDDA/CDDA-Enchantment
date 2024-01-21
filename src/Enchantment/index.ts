@@ -3,6 +3,7 @@ import { EnchData } from "./EnchInterface";
 import { Knockback } from "./Knockback";
 import { debugItem } from "./DebugItem";
 import { prepareProc } from "./Common";
+import { Protection } from "./Protection";
 
 
 
@@ -10,6 +11,7 @@ import { prepareProc } from "./Common";
 export async function createEnchantment(dm:DataManager){
     const enchDataList:EnchData[] = [
         await Knockback(dm),
+        await Protection(dm),
     ];
     //预处理并展开附魔flag
     const enchFlagList = await prepareProc(dm,enchDataList);

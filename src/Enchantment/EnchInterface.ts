@@ -1,4 +1,4 @@
-import { Flag } from "cdda-schema";
+import { Effect, Flag } from "cdda-schema";
 
 /**可用的附魔类型 列表 */
 export const VaildEnchCategoryList = [
@@ -16,6 +16,8 @@ export type EnchData = {
     main:Flag;
     /**冲突标识 */
     conflicts?:Flag[];
+    /**效果 */
+    effect?:Effect;
     /**限制类型 */
     category:VaildEnchCategory[];
     /**强度变体数据集 */

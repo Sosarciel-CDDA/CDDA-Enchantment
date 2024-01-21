@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.numToRoman = exports.genWieldTrigger = void 0;
+exports.baseConfilcts = exports.numToRoman = exports.genWieldTrigger = void 0;
 const EMDefine_1 = require("../EMDefine");
 /**手持触发 */
 function genWieldTrigger(dm, flagId, hook, effects, condition) {
@@ -39,3 +39,14 @@ function numToRoman(num) {
     return roman;
 }
 exports.numToRoman = numToRoman;
+/**添加同附魔lvl变体的基础互斥 */
+function baseConfilcts(enchData) {
+    enchData.lvl.forEach((lvlobj) => {
+        const ench = lvlobj.ench;
+        ench.conflicts = ench.conflicts ?? [];
+        ench.conflicts.push(...enchData.lvl
+            .filter((sublvlobj) => sublvlobj.ench.id != ench.id)
+            .map((subelvlobj) => subelvlobj.ench.id));
+    });
+}
+exports.baseConfilcts = baseConfilcts;
