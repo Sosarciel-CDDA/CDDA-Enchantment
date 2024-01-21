@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.baseConfilcts = exports.numToRoman = exports.genWieldTrigger = void 0;
+exports.genEnchInfo = exports.genMainFlag = exports.genEnchConfilcts = exports.genBaseConfilcts = exports.numToRoman = exports.genWieldTrigger = void 0;
 const EMDefine_1 = require("../EMDefine");
+const Common_1 = require("./Common");
 /**手持触发 */
 function genWieldTrigger(dm, flagId, hook, effects, condition) {
     const eoc = EMDefine_1.EMDef.genActEoc(`${flagId}_WieldTigger`, effects, { and: [
@@ -40,7 +41,7 @@ function numToRoman(num) {
 }
 exports.numToRoman = numToRoman;
 /**添加同附魔lvl变体的基础互斥 */
-function baseConfilcts(enchData) {
+function genBaseConfilcts(enchData) {
     enchData.lvl.forEach((lvlobj) => {
         const ench = lvlobj.ench;
         ench.conflicts = ench.conflicts ?? [];
@@ -49,4 +50,28 @@ function baseConfilcts(enchData) {
             .map((subelvlobj) => subelvlobj.ench.id));
     });
 }
-exports.baseConfilcts = baseConfilcts;
+exports.genBaseConfilcts = genBaseConfilcts;
+/**根据ID与最大等级添加附魔互斥 */
+function genEnchConfilcts(enchData, baseID, maxLvl) {
+    enchData.lvl.forEach((lvlobj) => {
+        const ench = lvlobj.ench;
+        ench.conflicts = ench.conflicts ?? [];
+        for (let lvl = 1; lvl <= maxLvl; lvl++)
+            ench.conflicts.push((0, Common_1.enchLvlID)(baseID, lvl));
+    });
+}
+exports.genEnchConfilcts = genEnchConfilcts;
+/**生成主附魔flag */
+function genMainFlag(enchId, enchName) {
+    return {
+        type: "json_flag",
+        id: EMDefine_1.EMDef.genFlagID(`${enchId}_Main_Ench`),
+        name: enchName,
+    };
+}
+exports.genMainFlag = genMainFlag;
+/**生成附魔说明 */
+function genEnchInfo(color, name, desc) {
+    return `<color_${color}>[${name}]</color> ${desc}`;
+}
+exports.genEnchInfo = genEnchInfo;

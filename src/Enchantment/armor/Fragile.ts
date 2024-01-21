@@ -4,18 +4,19 @@ import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
-import { enchLvlID } from "../Common";
-import { FragileEID, FragileMaxLvl } from "./Fragile";
+import { enchEID, enchLvlID } from "../Common";
+import { BindCurseEID, BindCurseLvlFlagId } from "./BindCurse";
+import { ProtectionEID, ProtectionMaxLvl } from "./Protection";
 
 
-export const ProtectionEID = "Protection";
-export const ProtectionMaxLvl = 5;
-export async function Protection(dm:DataManager) {
-    const enchName = "保护";
+export const FragileEID = "Fragile";
+export const FragileMaxLvl = 5;
+export async function Fragile(dm:DataManager) {
+    const enchName = "脆弱";
     const out:JObject[]=[];
 
     //被动效果
-    const effid = EMDef.genEffectID(ProtectionEID);
+    const effid = EMDef.genEffectID(FragileEID);
     const enchEffect:Effect = {
         type:"effect_type",
         id:effid,
@@ -26,16 +27,16 @@ export async function Protection(dm:DataManager) {
             condition:"ALWAYS",
             values:[{
                 value:"ARMOR_BASH",
-                multiply:{math:[`u_effect_intensity('${effid}') * -0.05`]},
+                multiply:{math:[`u_effect_intensity('${effid}') * 0.05`]},
             },{
                 value:"ARMOR_CUT",
-                multiply:{math:[`u_effect_intensity('${effid}') * -0.05`]},
+                multiply:{math:[`u_effect_intensity('${effid}') * 0.05`]},
             },{
                 value:"ARMOR_STAB",
-                multiply:{math:[`u_effect_intensity('${effid}') * -0.05`]},
+                multiply:{math:[`u_effect_intensity('${effid}') * 0.05`]},
             },{
                 value:"ARMOR_BULLET",
-                multiply:{math:[`u_effect_intensity('${effid}') * -0.05`]},
+                multiply:{math:[`u_effect_intensity('${effid}') * 0.05`]},
             }]
         }]
     }
@@ -43,36 +44,37 @@ export async function Protection(dm:DataManager) {
 
     //构造附魔集
     const enchData:EnchData={
-        id:ProtectionEID,
-        main:genMainFlag(ProtectionEID,enchName),
+        id:FragileEID,
+        main:genMainFlag(FragileEID,enchName),
         effect: [enchEffect.id],
         categorys:["armor"],
-        lvl:[]
+        lvl:[],
+        add_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"add")}],
+        remove_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"remove")}]
     };
     out.push(enchData.main);
     //构造等级变体
-    for(let i=1;i<=ProtectionMaxLvl;i++){
+    for(let i=1;i<=FragileMaxLvl;i++){
         const subName = `${enchName} ${numToRoman(i)}`;
         //变体ID
         const ench:Flag = {
             type:"json_flag",
-            id:enchLvlID(ProtectionEID,i),
+            id:enchLvlID(FragileEID,i),
             name:subName,
-            info:genEnchInfo("white",subName,`这件物品可以降低 ${i*5}% 所受到的物理伤害`),
+            info:genEnchInfo("magenta",subName,`这件物品会增加 ${i*5}% 所受到的物理伤害`),
         };
         //加入输出
         out.push(ench);
         enchData.lvl.push({
             ench,
-            weight:ProtectionMaxLvl+1-i,
+            weight:(FragileMaxLvl+1-i)/4,
             intensity:i,
-            point:i*10,
         });
     }
 
     //互斥附魔flag
     genBaseConfilcts(enchData);
-    genEnchConfilcts(enchData,FragileEID,FragileMaxLvl);
-    dm.addStaticData(out,"ench",ProtectionEID);
+    genEnchConfilcts(enchData,ProtectionEID,ProtectionMaxLvl);
+    dm.addStaticData(out,"ench",FragileEID);
     return enchData;
 }

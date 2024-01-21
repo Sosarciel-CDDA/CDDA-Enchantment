@@ -5,6 +5,7 @@ import { prepareProc } from "./Common";
 import { weaponsEnch } from "./weapons";
 import { armorEnch } from "./armor";
 import { identifySpell } from "./IdentifySpell";
+import { removeCurseSpell } from "./RemoveCurseSpell";
 
 
 
@@ -19,4 +20,5 @@ export async function createEnchantment(dm:DataManager){
     //生成调试道具
     await debugItem(dm,enchFlagList);
     await identifySpell(dm);
+    await removeCurseSpell(dm);
 }

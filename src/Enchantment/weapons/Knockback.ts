@@ -4,37 +4,36 @@ import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { genBaseConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
+import { enchLvlID } from "../Common";
 
 
-
+export const KnockbackEID = "Knockback";
+export const KnockbackMaxLvl = 5;
 export async function Knockback(dm:DataManager) {
     const enchName = "击退";
-    const enchId = "Knockback";
-    const maxLvl = 5;
     const out:JObject[]=[];
 
     //构造附魔集
     const enchData:EnchData={
-        id:enchId,
-        main:genMainFlag(enchId,enchName),
-        category:["weapons"],
+        id:KnockbackEID,
+        main:genMainFlag(KnockbackEID,enchName),
+        categorys:["weapons"],
         lvl:[]
     };
     out.push(enchData.main);
     //构造等级变体
-    for(let i=1;i<=maxLvl;i++){
-        const subid = `${enchId}_${i}`;
+    for(let i=1;i<=KnockbackMaxLvl;i++){
         const subName = `${enchName} ${numToRoman(i)}`;
         //变体ID
         const ench:Flag = {
             type:"json_flag",
-            id:EMDef.genFlagID(`${subid}_Ench`),
+            id:enchLvlID(KnockbackEID,i),
             name:subName,
             info:genEnchInfo("white",subName,`这件物品可以造成 ${i} 点击退伤害`),
         };
         //触发法术
         const tspell:Spell = {
-            id:EMDef.genSpellID(`${subid}_Trigger`),
+            id:EMDef.genSpellID(`${KnockbackEID}_${i}_Trigger`),
             type:"SPELL",
             flags:[...CON_SPELL_FLAG],
             min_damage:i,
@@ -48,19 +47,19 @@ export async function Knockback(dm:DataManager) {
         }
         //触发eoc
         const teoc = genWieldTrigger(dm,ench.id,"TryMeleeAttack",[
-            {npc_location_variable:{global_val:`${enchId}_loc`}},
-            {u_cast_spell:{id:tspell.id},loc:{global_val:`${enchId}_loc`}}
+            {npc_location_variable:{global_val:`${KnockbackEID}_loc`}},
+            {u_cast_spell:{id:tspell.id},loc:{global_val:`${KnockbackEID}_loc`}}
         ])
         //加入输出
         out.push(ench,tspell,teoc);
         enchData.lvl.push({
             ench,
-            weight:maxLvl+1-i,
-            point:i*5,
+            weight:KnockbackMaxLvl+1-i,
+            point:i*10,
         });
     }
     //互斥附魔flag
     genBaseConfilcts(enchData);
-    dm.addStaticData(out,"ench",enchId);
+    dm.addStaticData(out,"ench",KnockbackEID);
     return enchData;
 }
