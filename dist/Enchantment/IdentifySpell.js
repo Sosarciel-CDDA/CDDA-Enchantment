@@ -19,7 +19,7 @@ async function identifySpell(dm) {
                     { if: { and: [
                                 { math: ["_identSpellCount", ">=", "1"] },
                                 { math: [Common_1.N_COMPLETE_IDENTIFY, "!=", "1"] },
-                                { or: EnchInterface_1.VaildEnchCategoryList.map((cate) => ({ npc_has_var: Common_1.ENCH_CATEGORY, value: cate })) }
+                                { or: EnchInterface_1.VaildEnchTypeList.map((cate) => ({ npc_has_var: Common_1.ITEM_ENCH_TYPE, value: cate })) }
                             ] },
                         then: [
                             { run_eocs: Common_1.IDENTIFY_EOC_ID },
@@ -47,7 +47,7 @@ async function identifySpell(dm) {
     const selIdentifyEoc = EMDefine_1.EMDef.genActEoc("SelIdentify", [
         { run_eocs: Common_1.INIT_ENCH_DATA_EOC_ID },
         { u_run_inv_eocs: "manual",
-            search_data: EnchInterface_1.VaildEnchCategoryList.map((cate) => ({ category: cate })),
+            search_data: EnchInterface_1.VaildEnchTypeList.map((cate) => EnchInterface_1.EnchTypeSearchDataMap[cate]).flat(),
             title: "选择要鉴定的物品",
             true_eocs: Common_1.IDENTIFY_EOC_ID },
     ]);

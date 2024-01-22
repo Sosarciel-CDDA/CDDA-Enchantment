@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.genEnchInfo = exports.genMainFlag = exports.genEnchConfilcts = exports.genBaseConfilcts = exports.numToRoman = exports.genWieldTrigger = void 0;
 const EMDefine_1 = require("../EMDefine");
+const cdda_schema_1 = require("cdda-schema");
 const Common_1 = require("./Common");
 /**手持触发 */
 function genWieldTrigger(dm, flagId, hook, effects, condition) {
@@ -72,6 +73,8 @@ function genMainFlag(enchId, enchName) {
 exports.genMainFlag = genMainFlag;
 /**生成附魔说明 */
 function genEnchInfo(color, name, desc) {
-    return `<color_${color}>[${name}]</color> ${desc}`;
+    if (cdda_schema_1.ColorList.includes(color))
+        return `<color_${color}>[${name}]</color> ${desc}`;
+    return `<${color}>[${name}]</${color}> ${desc}`;
 }
 exports.genEnchInfo = genEnchInfo;

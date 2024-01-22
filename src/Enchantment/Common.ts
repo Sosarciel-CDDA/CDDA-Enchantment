@@ -1,8 +1,8 @@
 import { DataManager } from "cdda-event";
-import { EnchData, VaildEnchCategory, VaildEnchCategoryList } from "./EnchInterface";
+import { EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
 import { JObject } from "@zwa73/utils";
 import { EMDef } from "@src/EMDefine";
-import { AnyObj, BoolObj, EocEffect, EocID, Flag, FlagID, NumObj } from "cdda-schema";
+import { AnyObj, BoolObj, Color, EocEffect, EocID, Flag, FlagID, NumObj } from "cdda-schema";
 
 
 
@@ -15,12 +15,18 @@ export const ENCH_ONE_IN    = 2;
 
 /**表示物品完成鉴定的变量 */
 export const N_COMPLETE_IDENTIFY = "n_completedIdentify";
+/**表示物品完成附魔初始化 */
+export const N_COMPLETE_ENCH_INIT = "n_completedEnchInit";
 /**表示物品附魔点数的变量 */
 export const N_ENCH_POINT = "n_enchPoint";
 /**表示物品的附魔类型 需初始化 */
-export const ENCH_CATEGORY = "enchCategory";
+export const ITEM_ENCH_TYPE = "itemEnchType";
+/**表述物品的最大附魔点数 */
+export const N_ENCH_POINT_MAX = "n_enchPointMax";
 /**表示物品是被诅咒的  在鉴定后生效*/
 export const IS_CURSED_FLAG_ID = EMDef.genFlagID("IS_CURSED");
+/**表示物品是被鉴定过的  在鉴定后生效*/
+export const IS_IDENTIFYED_FLAG_ID = EMDef.genFlagID("IS_IDENTIFYED");
 
 /**通用eoc的id */
 export function enchEID(flag:Flag|FlagID,t:"add"|"remove"){
@@ -83,8 +89,8 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                 ]}},
                 //符合类型
                 {or:[
-                    ...(data.categorys.map((t)=>({
-                        npc_has_var: ENCH_CATEGORY,
+                    ...(data.ench_type.map((t)=>({
+                        npc_has_var: ITEM_ENCH_TYPE,
                         value: t,
                     })))
                 ]},
@@ -115,20 +121,19 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         enchsum + ench.lvl.reduce((lvlobjsum,lvlobj)=>
             (lvlobj.weight ?? 0) + lvlobjsum, 0), 0);//总附魔权重
     const noneWeight   = weightSum/10;//空附魔权重
-    const weightListMap:Record<VaildEnchCategory,[EocID,NumObj][]> = {
-        "armor":[],
-        "weapons":[]
-    };
+    const weightListMap:Record<VaildEnchType,[EocID,NumObj][]> = {} as any;
+    VaildEnchTypeList.forEach((et)=>weightListMap[et]=[]);
     const identifyCond:BoolObj = {and:[
         {math:[N_COMPLETE_IDENTIFY,"!=","1"]},
-        {or:VaildEnchCategoryList.map((cate)=>({npc_has_var:ENCH_CATEGORY,value:cate}))}
+        {math:[N_COMPLETE_ENCH_INIT,"==",'1']},
+        {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))},
     ]}
     const subeocid = EMDef.genEOCID('IdentifyEnch_each');
     const identifyEnchEoc = EMDef.genActEoc(IDENTIFY_EOC_ID,[
         {if:{one_in_chance:ENCH_ONE_IN},
         then:[
             {math:["_eachCount","=",`${MAX_ENCH_COUNT}`]},
-            ...(VaildEnchCategoryList.map((cate)=>{
+            ...(VaildEnchTypeList.map((cate)=>{
                 const eff:EocEffect = {run_eocs:{
                     id:`${subeocid}_${cate}` as EocID,
                     eoc_type:"ACTIVATION",
@@ -139,7 +144,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                     ],
                     condition:{and:[
                         {math:["_eachCount",">",`0`]},
-                        {math:[N_ENCH_POINT,"<",`${MAX_ENCH_POINT}`]}
+                        {math:[N_ENCH_POINT,"<",N_ENCH_POINT_MAX]}
                     ]}
                 }}
                 return eff;
@@ -148,13 +153,14 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         ]},
         {u_message:"一件装备的详细属性被揭示了",type:"good"},
         {math:[N_COMPLETE_IDENTIFY,"=","1"]},
+        {npc_set_flag:IS_IDENTIFYED_FLAG_ID},
     ],identifyCond,true);
     const noneEnchEoc = EMDef.genActEoc("NoneEnch",[]);
 
-    for(const enchCate of VaildEnchCategoryList){
+    for(const enchCate of VaildEnchTypeList){
         enchDataList.forEach((ench)=>{
             const wlist = weightListMap[enchCate];
-            if(ench.categorys.includes(enchCate)){
+            if(ench.ench_type.includes(enchCate)){
                 ench.lvl.forEach((lvlobj)=>
                     wlist.push([enchEID(lvlobj.ench,"add"),{math:[`${(lvlobj.weight ?? 0)}`]}]))
                 wlist.push([noneEnchEoc.id,{math:[`${noneWeight}`]}]);
@@ -198,15 +204,18 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     out.push(upgradeEnchCache);
 
     //初始化附魔数据
-    const initeffects:EocEffect[] = (VaildEnchCategoryList.map((t)=>({
+    const initeffects:EocEffect[] = (VaildEnchTypeList.map((t)=>({
         u_run_inv_eocs:"all",
-        search_data:[{category:t}],
+        search_data:[...EnchTypeSearchDataMap[t]],
         true_eocs:{
             id:EMDef.genEOCID(`initEnchData_${t}`),
             eoc_type:"ACTIVATION",
             effect:[
-                {npc_add_var:ENCH_CATEGORY,value:t}
-            ]
+                {npc_add_var:ITEM_ENCH_TYPE,value:t},
+                {math:[N_ENCH_POINT_MAX,"=",`${MAX_ENCH_POINT}`]},
+                {math:[N_COMPLETE_ENCH_INIT,"=",'1']}
+            ],
+            condition:{math:[N_COMPLETE_ENCH_INIT,"!=",'1']}
         }
     })))
     const initEnchData = EMDef.genActEoc(INIT_ENCH_DATA_EOC_ID,[
@@ -246,6 +255,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     ],{math:[N_COMPLETE_IDENTIFY,"!=","1"]})
     dm.addInvokeEoc("WearItem" ,2,identifyWear);
     dm.addInvokeEoc("WieldItem",2,identifyWear);
+    dm.addInvokeEoc("EatItem"  ,2,identifyWear);
     out.push(identifyWear);
 
     //移除指定诅咒
@@ -264,9 +274,17 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         type:"json_flag",
         id:IS_CURSED_FLAG_ID,
         name:"诅咒的",
-        info:`<color_magenta>[诅咒的物品]</color> 这件含有诅咒`
+        info:`<bad>[诅咒的]</bad> 这件含有诅咒`
     }
     out.push(cursedFlag);
+
+    const identedFlag:Flag={
+        type:"json_flag",
+        id:IS_IDENTIFYED_FLAG_ID,
+        name:"完成鉴定",
+        info:`<good>[完成鉴定]</good> 你已经了解了这件物品的详情`
+    }
+    out.push(identedFlag);
 
     dm.addStaticData(out,"Common");
     return enchFlagList;

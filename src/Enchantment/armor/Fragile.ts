@@ -47,7 +47,7 @@ export async function Fragile(dm:DataManager) {
         id:FragileEID,
         main:genMainFlag(FragileEID,enchName),
         effect: [enchEffect.id],
-        categorys:["armor"],
+        ench_type:["armor"],
         lvl:[],
         add_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"add")}],
         remove_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"remove")}]
@@ -61,7 +61,7 @@ export async function Fragile(dm:DataManager) {
             type:"json_flag",
             id:enchLvlID(FragileEID,i),
             name:subName,
-            info:genEnchInfo("magenta",subName,`这件物品会增加 ${i*5}% 所受到的物理伤害`),
+            info:genEnchInfo("bad",subName,`这件物品会增加 ${i*5}% 所受到的物理伤害`),
         };
         //加入输出
         out.push(ench);

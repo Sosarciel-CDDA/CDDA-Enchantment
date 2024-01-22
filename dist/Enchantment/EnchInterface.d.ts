@@ -1,8 +1,10 @@
-import { EffectID, EocEffect, Flag } from "cdda-schema";
+import { EffectID, EocEffect, Flag, InvSearchData } from "cdda-schema";
 /**可用的附魔类型 列表 */
-export declare const VaildEnchCategoryList: readonly ["weapons", "armor"];
+export declare const VaildEnchTypeList: readonly ["weapons", "armor"];
 /**可用的附魔类型 */
-export type VaildEnchCategory = typeof VaildEnchCategoryList[number];
+export type VaildEnchType = typeof VaildEnchTypeList[number];
+/**附魔类型映射 */
+export declare const EnchTypeSearchDataMap: Record<VaildEnchType, InvSearchData[]>;
 /**附魔数据 */
 export type EnchData = {
     /**id */
@@ -14,7 +16,7 @@ export type EnchData = {
     /**效果 */
     effect?: EffectID[];
     /**限制类型 */
-    categorys: VaildEnchCategory[];
+    ench_type: VaildEnchType[];
     /**强度变体数据集 */
     lvl: EnchLvlData[];
     /**添加时会执行的effect */

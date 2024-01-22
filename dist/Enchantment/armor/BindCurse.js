@@ -12,7 +12,7 @@ async function BindCurse(dm) {
     const enchData = {
         id: exports.BindCurseEID,
         main: (0, UtilGener_1.genMainFlag)(exports.BindCurseEID, enchName),
-        categorys: ["armor"],
+        ench_type: ["armor"],
         lvl: [],
         is_curse: true
     };
@@ -23,7 +23,7 @@ async function BindCurse(dm) {
         type: "json_flag",
         id: exports.BindCurseLvlFlagId,
         name: enchName,
-        info: (0, UtilGener_1.genEnchInfo)("magenta", enchName, `这件物品在移除诅咒前无法脱下`),
+        info: (0, UtilGener_1.genEnchInfo)("bad", enchName, `这件物品在移除诅咒前无法脱下`),
     };
     //加入输出
     out.push(ench);

@@ -1,6 +1,6 @@
 import { EMDef } from "@src/EMDefine";
 import { CharHook, DataManager } from "cdda-event";
-import { BoolObj, Color, EocEffect, Flag, FlagID } from "cdda-schema";
+import { BoolObj, Color, ColorList, EocEffect, Flag, FlagID, MessageRatType } from "cdda-schema";
 import { EnchData } from "./EnchInterface";
 import { enchLvlID } from "./Common";
 
@@ -73,6 +73,8 @@ export function genMainFlag(enchId:string,enchName:string):Flag{
 }
 
 /**生成附魔说明 */
-export function genEnchInfo(color:Color,name:string,desc:string){
-    return `<color_${color}>[${name}]</color> ${desc}`;
+export function genEnchInfo(color:Color|MessageRatType,name:string,desc:string){
+    if(ColorList.includes(color as Color))
+        return `<color_${color}>[${name}]</color> ${desc}`;
+    return `<${color}>[${name}]</${color}> ${desc}`;
 }

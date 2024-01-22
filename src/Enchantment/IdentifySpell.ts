@@ -2,8 +2,8 @@ import { EMDef } from "@src/EMDefine";
 import { JObject } from "@zwa73/utils";
 import { DataManager } from "cdda-event";
 import { Eoc, Spell } from "cdda-schema";
-import { ENCH_CATEGORY, IDENTIFY_EOC_ID, INIT_ENCH_DATA_EOC_ID, N_COMPLETE_IDENTIFY } from "./Common";
-import { VaildEnchCategoryList } from "./EnchInterface";
+import { ITEM_ENCH_TYPE, IDENTIFY_EOC_ID, INIT_ENCH_DATA_EOC_ID, N_COMPLETE_IDENTIFY } from "./Common";
+import { EnchTypeSearchDataMap, VaildEnchTypeList } from "./EnchInterface";
 
 
 
@@ -23,7 +23,7 @@ export async function identifySpell(dm:DataManager){
                 {if:{and:[
                     {math:["_identSpellCount",">=","1"]},
                     {math:[N_COMPLETE_IDENTIFY,"!=","1"]},
-                    {or:VaildEnchCategoryList.map((cate)=>({npc_has_var:ENCH_CATEGORY,value:cate}))}
+                    {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))}
                 ]},
                 then:[
                     {run_eocs:IDENTIFY_EOC_ID},
@@ -52,7 +52,7 @@ export async function identifySpell(dm:DataManager){
     const selIdentifyEoc = EMDef.genActEoc("SelIdentify",[
         {run_eocs:INIT_ENCH_DATA_EOC_ID},
         {u_run_inv_eocs:"manual",
-        search_data:VaildEnchCategoryList.map((cate)=>({category:cate})),
+        search_data:VaildEnchTypeList.map((cate)=>EnchTypeSearchDataMap[cate]).flat(),
         title:"选择要鉴定的物品",
         true_eocs:IDENTIFY_EOC_ID},
     ])

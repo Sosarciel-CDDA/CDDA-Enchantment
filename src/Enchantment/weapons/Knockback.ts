@@ -17,7 +17,7 @@ export async function Knockback(dm:DataManager) {
     const enchData:EnchData={
         id:KnockbackEID,
         main:genMainFlag(KnockbackEID,enchName),
-        categorys:["weapons"],
+        ench_type:["weapons"],
         lvl:[]
     };
     out.push(enchData.main);
@@ -29,7 +29,7 @@ export async function Knockback(dm:DataManager) {
             type:"json_flag",
             id:enchLvlID(KnockbackEID,i),
             name:subName,
-            info:genEnchInfo("white",subName,`这件物品可以造成 ${i} 点击退伤害`),
+            info:genEnchInfo("mixed",subName,`这件物品可以造成 ${i} 点击退伤害`),
         };
         //触发法术
         const tspell:Spell = {
@@ -55,7 +55,7 @@ export async function Knockback(dm:DataManager) {
         enchData.lvl.push({
             ench,
             weight:KnockbackMaxLvl+1-i,
-            point:i*10,
+            point:i*2,
         });
     }
     //互斥附魔flag

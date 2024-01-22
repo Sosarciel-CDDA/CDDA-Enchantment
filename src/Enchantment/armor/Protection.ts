@@ -46,7 +46,7 @@ export async function Protection(dm:DataManager) {
         id:ProtectionEID,
         main:genMainFlag(ProtectionEID,enchName),
         effect: [enchEffect.id],
-        categorys:["armor"],
+        ench_type:["armor"],
         lvl:[]
     };
     out.push(enchData.main);
@@ -58,7 +58,7 @@ export async function Protection(dm:DataManager) {
             type:"json_flag",
             id:enchLvlID(ProtectionEID,i),
             name:subName,
-            info:genEnchInfo("white",subName,`这件物品可以降低 ${i*5}% 所受到的物理伤害`),
+            info:genEnchInfo("good",subName,`这件物品可以降低 ${i*5}% 所受到的物理伤害`),
         };
         //加入输出
         out.push(ench);
