@@ -2,7 +2,7 @@ import { EMDef } from "@src/EMDefine";
 import { JObject } from "@zwa73/utils";
 import { DataManager } from "cdda-event";
 import { Eoc, Spell } from "cdda-schema";
-import { ITEM_ENCH_TYPE, IDENTIFY_EOC_ID, INIT_ENCH_DATA_EOC_ID, N_COMPLETE_IDENTIFY } from "./Common";
+import { ITEM_ENCH_TYPE, IDENTIFY_EOC_ID, INIT_ENCH_DATA_EOC_ID, IS_IDENTIFYED_FLAG_ID } from "./Common";
 import { EnchTypeSearchDataMap, VaildEnchTypeList } from "./EnchInterface";
 
 
@@ -22,7 +22,7 @@ export async function identifySpell(dm:DataManager){
             effect:[
                 {if:{and:[
                     {math:["_identSpellCount",">=","1"]},
-                    {math:[N_COMPLETE_IDENTIFY,"!=","1"]},
+                    {not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}},
                     {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))}
                 ]},
                 then:[

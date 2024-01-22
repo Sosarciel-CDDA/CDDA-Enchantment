@@ -1,5 +1,5 @@
 import { DataManager } from "cdda-event";
-import { EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
+import { EffectActiveCond, EffectActiveCondList, EffectActiveCondSearchDataMap, EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
 import { JObject } from "@zwa73/utils";
 import { EMDef } from "@src/EMDefine";
 import { AnyObj, BoolObj, Color, EocEffect, EocID, Flag, FlagID, NumObj } from "cdda-schema";
@@ -13,20 +13,21 @@ export const MAX_ENCH_COUNT = 10;
 /**附魔物品生成 one_in 概率 */
 export const ENCH_ONE_IN    = 2;
 
-/**表示物品完成鉴定的变量 */
-export const N_COMPLETE_IDENTIFY = "n_completedIdentify";
 /**表示物品完成附魔初始化 */
 export const N_COMPLETE_ENCH_INIT = "n_completedEnchInit";
 /**表示物品附魔点数的变量 */
 export const N_ENCH_POINT = "n_enchPoint";
+/**表述物品的最大附魔点数 需初始化 */
+export const N_ENCH_POINT_MAX = "n_enchPointMax";
 /**表示物品的附魔类型 需初始化 */
 export const ITEM_ENCH_TYPE = "itemEnchType";
-/**表述物品的最大附魔点数 */
-export const N_ENCH_POINT_MAX = "n_enchPointMax";
-/**表示物品是被诅咒的  在鉴定后生效*/
+
+/**表示物品是被诅咒的 需鉴定 */
 export const IS_CURSED_FLAG_ID = EMDef.genFlagID("IS_CURSED");
-/**表示物品是被鉴定过的  在鉴定后生效*/
+/**表示物品是被鉴定过的 需鉴定 */
 export const IS_IDENTIFYED_FLAG_ID = EMDef.genFlagID("IS_IDENTIFYED");
+/**表示物品是含有附魔 需鉴定 */
+export const IS_ENCHED_FLAG_ID = EMDef.genFlagID("IS_ENCHED");
 
 /**通用eoc的id */
 export function enchEID(flag:Flag|FlagID,t:"add"|"remove"){
@@ -124,7 +125,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     const weightListMap:Record<VaildEnchType,[EocID,NumObj][]> = {} as any;
     VaildEnchTypeList.forEach((et)=>weightListMap[et]=[]);
     const identifyCond:BoolObj = {and:[
-        {math:[N_COMPLETE_IDENTIFY,"!=","1"]},
+        {not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}},
         {math:[N_COMPLETE_ENCH_INIT,"==",'1']},
         {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))},
     ]}
@@ -150,9 +151,9 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                 return eff;
             })),
             {u_message:"你从一件装备上发现了附魔",type:"good"},
+            {npc_set_flag:IS_ENCHED_FLAG_ID},
         ]},
         {u_message:"一件装备的详细属性被揭示了",type:"good"},
-        {math:[N_COMPLETE_IDENTIFY,"=","1"]},
         {npc_set_flag:IS_IDENTIFYED_FLAG_ID},
     ],identifyCond,true);
     const noneEnchEoc = EMDef.genActEoc("NoneEnch",[]);
@@ -169,23 +170,6 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     }
     out.push(identifyEnchEoc,noneEnchEoc);
 
-    //累计附魔缓存
-    const sumCacheEffects:EocEffect[] = [];
-    enchDataList.forEach((ench)=>{
-        ench.lvl.forEach((lvlobj)=>{
-            if(lvlobj.intensity!=null){
-                sumCacheEffects.push({
-                    if:{npc_has_flag:lvlobj.ench.id},
-                    then:[{math:[enchInsVar(ench,"u"),"+=",`${lvlobj.intensity}`]}]
-                })
-            }
-        })
-    })
-    const sumCacheEoc = EMDef.genActEoc("SumEnchCache",[
-        //{u_message:"sumCacheEffects"},
-        ...sumCacheEffects
-    ]);
-    out.push(sumCacheEoc);
     //清理附魔缓存
     const clearCacheEoc = EMDef.genActEoc("ClearEnchCache",
         enchDataList.map((ench)=>({math:[enchInsVar(ench,"u"),"=","0"]}))
@@ -194,9 +178,33 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     //刷新附魔缓存eoc
     const upgradeEnchCache = EMDef.genActEoc(UPGRADE_ENCH_CACHE_EOC_ID,[
         {run_eocs:clearCacheEoc.id},
-        {u_run_inv_eocs:"all",
-        search_data:[{wielded_only:true},{worn_only:true}],
-        true_eocs:sumCacheEoc.id},
+        //遍历生效条件
+        ...EffectActiveCondList.map((cond)=>{
+            const eff:EocEffect = {
+                u_run_inv_eocs:"all",
+                search_data:EffectActiveCondSearchDataMap[cond],
+                true_eocs:{
+                    eoc_type:"ACTIVATION",
+                    id:EMDef.genEOCID(`SumEnchCache_${cond}`),
+                    effect:[
+                        //遍历附魔
+                        ...enchDataList.map((ench)=>
+                            ench.lvl.map((lvlobj)=>{
+                                const activeCond = ench.effect_active_cond??[...EffectActiveCondList];
+                                if(lvlobj.intensity!=null && activeCond.includes(cond)){
+                                    const seff:EocEffect = {
+                                        if:{npc_has_flag:lvlobj.ench.id},
+                                        then:[{math:[enchInsVar(ench,"u"),"+=",`${lvlobj.intensity}`]}]
+                                    }
+                                    return seff;
+                                }
+                                return undefined as any as EocEffect;
+                            }).filter((e)=>e!==undefined)).flat()
+                    ]
+                }
+            }
+            return eff;
+        })
     ],undefined,true);
     dm.addInvokeEoc("WearItem"    ,1,upgradeEnchCache);
     dm.addInvokeEoc("WieldItemRaw",1,upgradeEnchCache);
@@ -225,8 +233,8 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
 
     //根据缓存添加效果
     enchDataList.forEach((ench)=>{
-        if(ench.effect!=null){
-            const eids = ench.effect;
+        if(ench.intensity_effect!=null){
+            const eids = ench.intensity_effect;
             //触发eoc
             const teoc = EMDef.genActEoc(`${ench.id}_AddEffect`,[
                 {if:{math:[enchInsVar(ench,"u"),">=","1"]},
@@ -252,7 +260,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     //鉴定穿戴的物品
     const identifyWear = EMDef.genActEoc("IdentifyEnch_Wear",[
         {run_eocs:[INIT_ENCH_DATA_EOC_ID,IDENTIFY_EOC_ID]},
-    ],{math:[N_COMPLETE_IDENTIFY,"!=","1"]})
+    ],{not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}})
     dm.addInvokeEoc("WearItem" ,2,identifyWear);
     dm.addInvokeEoc("WieldItem",2,identifyWear);
     dm.addInvokeEoc("EatItem"  ,2,identifyWear);
@@ -274,7 +282,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         type:"json_flag",
         id:IS_CURSED_FLAG_ID,
         name:"诅咒的",
-        info:`<bad>[诅咒的]</bad> 这件含有诅咒`
+        info:`<bad>[诅咒的]</bad> 这件物品含有诅咒`
     }
     out.push(cursedFlag);
 
@@ -285,6 +293,14 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
         info:`<good>[完成鉴定]</good> 你已经了解了这件物品的详情`
     }
     out.push(identedFlag);
+
+    const enchedFlag:Flag={
+        type:"json_flag",
+        id:IS_ENCHED_FLAG_ID,
+        name:"魔法物品",
+        info:`<good>[魔法物品]</good> 这件物品被附魔了`
+    }
+    out.push(enchedFlag);
 
     dm.addStaticData(out,"Common");
     return enchFlagList;

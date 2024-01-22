@@ -46,7 +46,7 @@ export async function Fragile(dm:DataManager) {
     const enchData:EnchData={
         id:FragileEID,
         main:genMainFlag(FragileEID,enchName),
-        effect: [enchEffect.id],
+        intensity_effect: [enchEffect.id],
         ench_type:["armor"],
         lvl:[],
         add_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"add")}],

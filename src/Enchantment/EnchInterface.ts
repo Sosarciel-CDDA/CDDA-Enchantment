@@ -15,6 +15,20 @@ export const EnchTypeSearchDataMap:Record<VaildEnchType,InvSearchData[]> = {
     //food    :[{flags:["EATEN_HOT"]},{flags:["SMOKABLE"]}],
 }
 
+/**附魔强度效果的生效时机 列表 */
+export const EffectActiveCondList = [
+    "wield",
+    "worn",
+] as const;
+/**附魔强度效果的生效时机 */
+export type EffectActiveCond = typeof EffectActiveCondList[number];
+/**生效时机映射 */
+export const EffectActiveCondSearchDataMap:Record<EffectActiveCond,InvSearchData[]> = {
+    wield :[{wielded_only:true}] ,
+    worn   :[{worn_only:true}]   ,
+    //food    :[{flags:["EATEN_HOT"]},{flags:["SMOKABLE"]}],
+}
+
 /**附魔数据 */
 export type EnchData = {
     /**id */
@@ -23,8 +37,10 @@ export type EnchData = {
     main:Flag;
     /**冲突标识 */
     conflicts?:Flag[];
-    /**效果 */
-    effect?:EffectID[];
+    /**附魔强度导致的效果 */
+    intensity_effect?:EffectID[];
+    /**强度生效方式 undefined时为全部 */
+    effect_active_cond?:EffectActiveCond[];
     /**限制类型 */
     ench_type:VaildEnchType[];
     /**强度变体数据集 */
@@ -34,7 +50,7 @@ export type EnchData = {
     /**移除时会执行的effect */
     remove_effects?:EocEffect[];
     /**是一个可以被移除诅移除的诅咒  
-     * 默认false
+     * 默认false  
      */
     is_curse?:boolean;
 }
