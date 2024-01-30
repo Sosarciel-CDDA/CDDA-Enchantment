@@ -18,7 +18,7 @@ async function identifySpell(dm) {
                 effect: [
                     { if: { and: [
                                 { math: ["_identSpellCount", ">=", "1"] },
-                                { math: [Common_1.N_COMPLETE_IDENTIFY, "!=", "1"] },
+                                { not: { npc_has_flag: Common_1.IS_IDENTIFYED_FLAG_ID } },
                                 { or: EnchInterface_1.VaildEnchTypeList.map((cate) => ({ npc_has_var: Common_1.ITEM_ENCH_TYPE, value: cate })) }
                             ] },
                         then: [

@@ -7,7 +7,7 @@ const EMDefine_1 = require("../EMDefine");
 async function Trauma(dm) {
     const did = "Trauma";
     const extid = "HeavyTrauma";
-    const stackcount = EMDefine_1.TEFF_MAX;
+    const stackcount = EMDefine_1.MAX_NUM;
     const dur = "15 s";
     const tspell = {
         type: "SPELL",
@@ -16,7 +16,7 @@ async function Trauma(dm) {
         description: "创伤触发伤害",
         effect: "attack",
         min_damage: { math: [`u_effect_intensity('${did}')`] },
-        max_damage: EMDefine_1.SPELL_MAX_DAMAGE,
+        max_damage: EMDefine_1.MAX_NUM,
         valid_targets: ["self"],
         shape: "blast",
         damage_type: "stab",
@@ -82,7 +82,7 @@ async function Laceration(dm) {
         description: "撕裂创伤触发伤害",
         effect: "attack",
         min_damage: { math: [`u_effect_intensity('${did}') * tmpLacerationDmg`] },
-        max_damage: EMDefine_1.SPELL_MAX_DAMAGE,
+        max_damage: EMDefine_1.MAX_NUM,
         valid_targets: ["self"],
         shape: "blast",
         damage_type: "stab",

@@ -5,6 +5,12 @@ export declare const VaildEnchTypeList: readonly ["weapons", "armor"];
 export type VaildEnchType = typeof VaildEnchTypeList[number];
 /**附魔类型映射 */
 export declare const EnchTypeSearchDataMap: Record<VaildEnchType, InvSearchData[]>;
+/**附魔强度效果的生效时机 列表 */
+export declare const EffectActiveCondList: readonly ["wield", "worn"];
+/**附魔强度效果的生效时机 */
+export type EffectActiveCond = typeof EffectActiveCondList[number];
+/**生效时机映射 */
+export declare const EffectActiveCondSearchDataMap: Record<EffectActiveCond, InvSearchData[]>;
 /**附魔数据 */
 export type EnchData = {
     /**id */
@@ -13,8 +19,10 @@ export type EnchData = {
     main: Flag;
     /**冲突标识 */
     conflicts?: Flag[];
-    /**效果 */
-    effect?: EffectID[];
+    /**附魔强度导致的效果 */
+    intensity_effect?: EffectID[];
+    /**强度生效方式 undefined时为全部 */
+    effect_active_cond?: EffectActiveCond[];
     /**限制类型 */
     ench_type: VaildEnchType[];
     /**强度变体数据集 */

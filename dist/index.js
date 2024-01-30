@@ -6,7 +6,8 @@ const path = require("path");
 const DamageType_1 = require("./DamageType");
 const Enchantment_1 = require("./Enchantment");
 const dataPath = path.join(process.cwd(), 'data');
-const gamePath = utils_1.UtilFT.loadJSONFileSync(path.join(dataPath, 'build_setting.json')).game_path;
+const envPath = path.join(process.cwd(), '..');
+const gamePath = utils_1.UtilFT.loadJSONFileSync(path.join(envPath, 'build_setting.json')).game_path;
 const outPath = path.join(gamePath, 'data', 'mods', 'CnpcEnchantment');
 async function main() {
     const EnchDm = new cdda_event_1.DataManager(dataPath, outPath, "CENCHEF");

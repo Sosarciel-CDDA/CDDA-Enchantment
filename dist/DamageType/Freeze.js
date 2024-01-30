@@ -14,7 +14,7 @@ async function Freeze(dm) {
         description: "冻结触发",
         effect: "mod_moves",
         min_damage: { math: [`tmp${did}Dmg`] },
-        max_damage: EMDefine_1.SPELL_MAX_DAMAGE,
+        max_damage: EMDefine_1.MAX_NUM,
         valid_targets: ["self"],
         shape: "blast"
     };

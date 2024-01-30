@@ -13,7 +13,7 @@ async function Electrify(dm) {
         id: did,
         name: ["感电"],
         desc: [`可被 放电 伤害激发, 造成相当于 放电伤害*感电层数 的电击伤害。`],
-        max_intensity: EMDefine_1.TEFF_MAX,
+        max_intensity: EMDefine_1.MAX_NUM,
         max_duration: dur,
         show_in_info: true,
     };
@@ -64,7 +64,7 @@ async function Discharge(dm) {
         description: "放电感电触发伤害",
         effect: "attack",
         min_damage: { math: [`u_effect_intensity('${dmgeffid}') * tmpDischargeDmg`] },
-        max_damage: EMDefine_1.SPELL_MAX_DAMAGE,
+        max_damage: EMDefine_1.MAX_NUM,
         valid_targets: ["self"],
         shape: "blast",
         damage_type: "electric",

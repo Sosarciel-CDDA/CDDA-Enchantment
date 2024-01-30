@@ -40,7 +40,7 @@ async function Protection(dm) {
     const enchData = {
         id: exports.ProtectionEID,
         main: (0, UtilGener_1.genMainFlag)(exports.ProtectionEID, enchName),
-        effect: [enchEffect.id],
+        intensity_effect: [enchEffect.id],
         ench_type: ["armor"],
         lvl: []
     };
