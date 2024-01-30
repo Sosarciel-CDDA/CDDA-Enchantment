@@ -1,6 +1,6 @@
 import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "cdda-schema";
 import { genDIO } from "./UtilGener";
-import { EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
+import { EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 
 //感电
@@ -13,7 +13,7 @@ export async function Electrify(dm:DataManager){
         id: did as EffectID,
         name:["感电"],
         desc:[`可被 放电 伤害激发, 造成相当于 放电伤害*感电层数 的电击伤害。`],
-        max_intensity:TEFF_MAX,
+        max_intensity:MAX_NUM,
         max_duration:dur,
         show_in_info:true,
     }
@@ -64,7 +64,7 @@ export async function Discharge(dm:DataManager){
         description:"放电感电触发伤害",
         effect:"attack",
         min_damage:{math:[`u_effect_intensity('${dmgeffid}') * tmpDischargeDmg`]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         valid_targets:["self"],
         shape:"blast",
         damage_type:"electric",

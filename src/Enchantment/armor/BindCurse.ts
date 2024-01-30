@@ -1,8 +1,7 @@
-import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } from "cdda-schema";
-import { CON_SPELL_FLAG, EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
+import { Flag } from "cdda-schema";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genBaseConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
+import { genEnchInfo, genMainFlag } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
 import { enchLvlID } from "../Common";
 

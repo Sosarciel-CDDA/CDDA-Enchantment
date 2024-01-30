@@ -1,6 +1,6 @@
 import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "cdda-schema";
 import { genDIO } from "./UtilGener";
-import { EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
+import { EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 
 
@@ -8,7 +8,7 @@ import { DataManager } from "cdda-event";
 export async function Trauma(dm:DataManager){
     const did = "Trauma" as DamageTypeID;
     const extid = "HeavyTrauma" as EffectID;
-    const stackcount = TEFF_MAX;
+    const stackcount = MAX_NUM;
     const dur = "15 s";
     const tspell:Spell={
         type:"SPELL",
@@ -17,7 +17,7 @@ export async function Trauma(dm:DataManager){
         description:"创伤触发伤害",
         effect:"attack",
         min_damage:{math:[`u_effect_intensity('${did}')`]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         valid_targets:["self"],
         shape:"blast",
         damage_type:"stab",
@@ -83,7 +83,7 @@ export async function Laceration(dm:DataManager){
         description:"撕裂创伤触发伤害",
         effect:"attack",
         min_damage:{math:[`u_effect_intensity('${did}') * tmpLacerationDmg`]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         valid_targets:["self"],
         shape:"blast",
         damage_type:"stab",

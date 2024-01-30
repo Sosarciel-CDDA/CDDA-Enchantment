@@ -8,7 +8,8 @@ import { createEnchantment } from "./Enchantment";
 
 
 const dataPath = path.join(process.cwd(),'data');
-const gamePath = UtilFT.loadJSONFileSync(path.join(dataPath,'build_setting.json')).game_path as string;
+const envPath = path.join(process.cwd(),'..');
+const gamePath = UtilFT.loadJSONFileSync(path.join(envPath,'build_setting.json')).game_path as string;
 const outPath = path.join(gamePath,'data','mods','CnpcEnchantment');
 
 async function main(){

@@ -1,6 +1,6 @@
 import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "cdda-schema";
 import { genDIO } from "./UtilGener";
-import { EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
+import { EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 
 //冻结
@@ -14,7 +14,7 @@ export async function Freeze(dm:DataManager){
         description:"冻结触发",
         effect:"mod_moves",
         min_damage:{math:[`tmp${did}Dmg`]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         valid_targets:["self"],
         shape:"blast"
     }

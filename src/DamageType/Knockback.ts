@@ -1,6 +1,6 @@
 import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "cdda-schema";
 import { genDIO } from "./UtilGener";
-import { EMDef, SPELL_MAX_DAMAGE, TEFF_MAX } from "@src/EMDefine";
+import { EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 
 
@@ -30,7 +30,7 @@ export async function Knockback(dm:DataManager){
         description:"击退触发破坏地形",
         effect:"bash",
         min_damage:{math:[`${tmddmg} * 10`]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         min_aoe:1,
         max_aoe:1,
         valid_targets:["ground"],
@@ -45,7 +45,7 @@ export async function Knockback(dm:DataManager){
         effect:"attack",
         damage_type:"bash",
         min_damage:{math:[tmddmg]},
-        max_damage:SPELL_MAX_DAMAGE,
+        max_damage:MAX_NUM,
         min_aoe:1,
         max_aoe:1,
         valid_targets:["self","ally","hostile","ground"],
