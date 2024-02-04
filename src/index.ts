@@ -13,7 +13,7 @@ const gamePath = UtilFT.loadJSONFileSync(path.join(envPath,'build_setting.json')
 const outPath = path.join(gamePath,'data','mods','CnpcEnchantment');
 
 async function main(){
-    const EnchDm = new DataManager(dataPath,outPath,"CENCHEF");
+    const EnchDm = new DataManager(dataPath,outPath,"CENCHEF",{enableMoveStatus:false});
     await createEnchantment(EnchDm);
     await createDamageType(EnchDm);
     await EnchDm.saveAllData();

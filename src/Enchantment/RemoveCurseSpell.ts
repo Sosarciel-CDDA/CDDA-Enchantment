@@ -1,6 +1,6 @@
 import { JObject } from "@zwa73/utils";
 import { DataManager } from "cdda-event";
-import { Spell } from "cdda-schema";
+import { AnyItemFlag, Spell } from "cdda-schema";
 import { IS_CURSED_FLAG_ID, REMOVE_CURSE_EOC_ID } from "./Common";
 import { EMDef } from "@src/EMDefine";
 
@@ -50,7 +50,7 @@ export async function removeCurseSpell(dm:DataManager){
     //指定移除
     const removeCurse = EMDef.genActEoc("SelRemoveCurse_eoc",[{
         u_run_inv_eocs:"manual",
-        search_data:[{flags:[IS_CURSED_FLAG_ID]}],
+        search_data:[{flags:[IS_CURSED_FLAG_ID as AnyItemFlag]}],
         true_eocs:{
             eoc_type:"ACTIVATION",
             id:EMDef.genEOCID("SelRemoveCurse_eoc_sub"),

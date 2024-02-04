@@ -10,7 +10,7 @@ const envPath = path.join(process.cwd(), '..');
 const gamePath = utils_1.UtilFT.loadJSONFileSync(path.join(envPath, 'build_setting.json')).game_path;
 const outPath = path.join(gamePath, 'data', 'mods', 'CnpcEnchantment');
 async function main() {
-    const EnchDm = new cdda_event_1.DataManager(dataPath, outPath, "CENCHEF");
+    const EnchDm = new cdda_event_1.DataManager(dataPath, outPath, "CENCHEF", { enableMoveStatus: false });
     await (0, Enchantment_1.createEnchantment)(EnchDm);
     await (0, DamageType_1.createDamageType)(EnchDm);
     await EnchDm.saveAllData();
