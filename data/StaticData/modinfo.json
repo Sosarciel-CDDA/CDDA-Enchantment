@@ -1,11 +1,11 @@
 [
     {
         "type": "MOD_INFO",
-        "id": "cnpcench",
-        "name": "CnpcEnchantment",
+        "id": "cench",
+        "name": "CustomEnch",
         "authors": ["zwa73"],
         "maintainers": ["zwa73"],
-        "description": "CnpcEnchantment",
+        "description": "CustomEnch",
         "category": "other",
         "dependencies": ["dda","aftershock","magiclysm"]
     }
