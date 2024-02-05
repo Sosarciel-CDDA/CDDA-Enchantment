@@ -273,7 +273,7 @@ async function prepareProc(dm, enchDataList) {
         info: `<good>[魔法物品]</good> 这件物品被附魔了`
     };
     out.push(enchedFlag);
-    dm.addStaticData(out, "Common");
+    dm.addData(out, "Common");
     return enchFlagList;
 }
 exports.prepareProc = prepareProc;

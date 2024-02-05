@@ -273,6 +273,6 @@ async function createDivinationSpell(dm) {
         hide_failing: true,
         title: "选择你想要预言的地点"
     });
-    dm.addStaticData(out, "common_resource", "DivinationSpell");
+    dm.addData(out, "common_resource", "DivinationSpell");
 }
 exports.createDivinationSpell = createDivinationSpell;

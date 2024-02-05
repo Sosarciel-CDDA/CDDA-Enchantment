@@ -69,7 +69,7 @@ async function Trauma(dm) {
         max_duration: dur,
         show_in_info: true,
     };
-    dm.addStaticData([tspell, eff, onDmgEoc, dt, (0, UtilGener_1.genDIO)(dt), exteff], "damage_type", did);
+    dm.addData([tspell, eff, onDmgEoc, dt, (0, UtilGener_1.genDIO)(dt), exteff], "damage_type", did);
 }
 exports.Trauma = Trauma;
 //撕裂
@@ -107,6 +107,6 @@ async function Laceration(dm) {
         ondamage_eocs: [onDmgEoc.id],
         no_resist: true,
     };
-    dm.addStaticData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
+    dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
 exports.Laceration = Laceration;

@@ -302,6 +302,6 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     }
     out.push(enchedFlag);
 
-    dm.addStaticData(out,"Common");
+    dm.addData(out,"Common");
     return enchFlagList;
 }

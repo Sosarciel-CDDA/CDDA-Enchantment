@@ -67,7 +67,7 @@ async function Protection(dm) {
     //互斥附魔flag
     (0, UtilGener_1.genBaseConfilcts)(enchData);
     (0, UtilGener_1.genEnchConfilcts)(enchData, Fragile_1.FragileEID, Fragile_1.FragileMaxLvl);
-    dm.addStaticData(out, "ench", exports.ProtectionEID);
+    dm.addData(out, "ench", exports.ProtectionEID);
     return enchData;
 }
 exports.Protection = Protection;

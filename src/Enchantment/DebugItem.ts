@@ -59,5 +59,5 @@ export async function debugItem(dm:DataManager,enchFlagList:Flag[]){
     }
     out.push(EnchTestTool);
 
-    dm.addStaticData(out,"EnchTest");
+    dm.addData(out,"EnchTest");
 }

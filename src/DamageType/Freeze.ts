@@ -37,5 +37,5 @@ export async function Freeze(dm:DataManager){
         ondamage_eocs: [ onDmgEoc.id ],
         no_resist:true
     }
-    dm.addStaticData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
+    dm.addData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
 }

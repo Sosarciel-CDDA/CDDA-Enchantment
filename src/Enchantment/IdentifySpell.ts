@@ -74,5 +74,5 @@ export async function identifySpell(dm:DataManager){
     }
     out.push(selIdentifyEoc,selIdentify);
 
-    dm.addStaticData(out,"IdentifySpell");
+    dm.addData(out,"IdentifySpell");
 }

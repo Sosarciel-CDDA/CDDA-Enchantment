@@ -34,7 +34,7 @@ async function BindCurse(dm) {
         ],
         remove_effects: [{ npc_unset_flag: "INTEGRATED" }],
     });
-    dm.addStaticData(out, "ench", exports.BindCurseEID);
+    dm.addData(out, "ench", exports.BindCurseEID);
     return enchData;
 }
 exports.BindCurse = BindCurse;

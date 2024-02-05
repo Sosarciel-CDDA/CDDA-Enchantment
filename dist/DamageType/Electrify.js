@@ -50,7 +50,7 @@ async function Electrify(dm) {
         max_duration: dur,
         show_in_info: true,
     };
-    dm.addStaticData([eff, onDmgEoc, dt, exteff, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
+    dm.addData([eff, onDmgEoc, dt, exteff, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
 exports.Electrify = Electrify;
 //放电
@@ -92,6 +92,6 @@ async function Discharge(dm) {
         ondamage_eocs: [onDmgEoc.id],
         no_resist: true
     };
-    dm.addStaticData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
+    dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
 exports.Discharge = Discharge;

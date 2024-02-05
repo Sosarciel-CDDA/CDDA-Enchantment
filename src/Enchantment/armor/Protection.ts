@@ -73,6 +73,6 @@ export async function Protection(dm:DataManager) {
     //互斥附魔flag
     genBaseConfilcts(enchData);
     genEnchConfilcts(enchData,FragileEID,FragileMaxLvl);
-    dm.addStaticData(out,"ench",ProtectionEID);
+    dm.addData(out,"ench",ProtectionEID);
     return enchData;
 }

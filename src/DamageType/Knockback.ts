@@ -95,5 +95,5 @@ export async function Knockback(dm:DataManager){
         ondamage_eocs: [ onDmgEoc.id ],
         derived_from:["bash",1]
     }
-    dm.addStaticData([onDmgEoc,dt,tspell_base,tspell_bash,tspell_subdamage,tspell_subknockback,genDIO(dt)], "damage_type", did);
+    dm.addData([onDmgEoc,dt,tspell_base,tspell_bash,tspell_subdamage,tspell_subknockback,genDIO(dt)], "damage_type", did);
 }

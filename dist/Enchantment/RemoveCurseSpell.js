@@ -67,6 +67,6 @@ async function removeCurseSpell(dm) {
         base_casting_time: 1000,
     };
     out.push(removeCurse, selRemove);
-    dm.addStaticData(out, "IdentifySpell");
+    dm.addData(out, "IdentifySpell");
 }
 exports.removeCurseSpell = removeCurseSpell;

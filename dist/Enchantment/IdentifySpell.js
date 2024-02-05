@@ -68,6 +68,6 @@ async function identifySpell(dm) {
         base_casting_time: 1000,
     };
     out.push(selIdentifyEoc, selIdentify);
-    dm.addStaticData(out, "IdentifySpell");
+    dm.addData(out, "IdentifySpell");
 }
 exports.identifySpell = identifySpell;

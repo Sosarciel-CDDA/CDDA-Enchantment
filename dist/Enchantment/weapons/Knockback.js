@@ -56,7 +56,7 @@ async function Knockback(dm) {
     }
     //互斥附魔flag
     (0, UtilGener_1.genBaseConfilcts)(enchData);
-    dm.addStaticData(out, "ench", exports.KnockbackEID);
+    dm.addData(out, "ench", exports.KnockbackEID);
     return enchData;
 }
 exports.Knockback = Knockback;

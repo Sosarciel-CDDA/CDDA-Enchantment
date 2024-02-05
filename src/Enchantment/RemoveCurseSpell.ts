@@ -75,5 +75,5 @@ export async function removeCurseSpell(dm:DataManager){
     }
     out.push(removeCurse,selRemove);
 
-    dm.addStaticData(out,"IdentifySpell");
+    dm.addData(out,"IdentifySpell");
 }

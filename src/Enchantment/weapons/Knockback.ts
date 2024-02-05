@@ -60,6 +60,6 @@ export async function Knockback(dm:DataManager) {
     }
     //互斥附魔flag
     genBaseConfilcts(enchData);
-    dm.addStaticData(out,"ench",KnockbackEID);
+    dm.addData(out,"ench",KnockbackEID);
     return enchData;
 }

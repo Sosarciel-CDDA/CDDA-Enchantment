@@ -75,6 +75,6 @@ export async function Fragile(dm:DataManager) {
     //互斥附魔flag
     genBaseConfilcts(enchData);
     genEnchConfilcts(enchData,ProtectionEID,ProtectionMaxLvl);
-    dm.addStaticData(out,"ench",FragileEID);
+    dm.addData(out,"ench",FragileEID);
     return enchData;
 }

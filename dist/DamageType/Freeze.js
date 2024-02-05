@@ -37,6 +37,6 @@ async function Freeze(dm) {
         ondamage_eocs: [onDmgEoc.id],
         no_resist: true
     };
-    dm.addStaticData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
+    dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
 exports.Freeze = Freeze;

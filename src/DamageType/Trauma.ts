@@ -70,7 +70,7 @@ export async function Trauma(dm:DataManager){
         max_duration:dur,
         show_in_info:true,
     }
-    dm.addStaticData([tspell,eff,onDmgEoc,dt,genDIO(dt),exteff], "damage_type", did);
+    dm.addData([tspell,eff,onDmgEoc,dt,genDIO(dt),exteff], "damage_type", did);
 }
 
 //撕裂
@@ -108,5 +108,5 @@ export async function Laceration(dm:DataManager){
         ondamage_eocs: [ onDmgEoc.id ],
         no_resist:true,
     }
-    dm.addStaticData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
+    dm.addData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
 }

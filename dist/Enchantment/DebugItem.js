@@ -53,6 +53,6 @@ async function debugItem(dm, enchFlagList) {
         }
     };
     out.push(EnchTestTool);
-    dm.addStaticData(out, "EnchTest");
+    dm.addData(out, "EnchTest");
 }
 exports.debugItem = debugItem;

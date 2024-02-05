@@ -69,7 +69,7 @@ async function Fragile(dm) {
     //互斥附魔flag
     (0, UtilGener_1.genBaseConfilcts)(enchData);
     (0, UtilGener_1.genEnchConfilcts)(enchData, Protection_1.ProtectionEID, Protection_1.ProtectionMaxLvl);
-    dm.addStaticData(out, "ench", exports.FragileEID);
+    dm.addData(out, "ench", exports.FragileEID);
     return enchData;
 }
 exports.Fragile = Fragile;

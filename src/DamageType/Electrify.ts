@@ -50,7 +50,7 @@ export async function Electrify(dm:DataManager){
         max_duration:dur,
         show_in_info:true,
     }
-    dm.addStaticData([eff,onDmgEoc,dt,exteff,genDIO(dt)], "damage_type", did);
+    dm.addData([eff,onDmgEoc,dt,exteff,genDIO(dt)], "damage_type", did);
 }
 
 //放电
@@ -92,5 +92,5 @@ export async function Discharge(dm:DataManager){
         ondamage_eocs: [ onDmgEoc.id ],
         no_resist:true
     }
-    dm.addStaticData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
+    dm.addData([onDmgEoc,dt,tspell,genDIO(dt)], "damage_type", did);
 }

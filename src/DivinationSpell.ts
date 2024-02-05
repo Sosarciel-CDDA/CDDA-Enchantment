@@ -310,5 +310,5 @@ export async function createDivinationSpell(dm:DataManager){
         hide_failing:true,
         title:"选择你想要预言的地点"
     })
-    dm.addStaticData(out,"common_resource","DivinationSpell");
+    dm.addData(out,"common_resource","DivinationSpell");
 }

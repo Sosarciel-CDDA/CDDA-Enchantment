@@ -39,6 +39,6 @@ export async function BindCurse(dm:DataManager) {
         remove_effects:[{npc_unset_flag:"INTEGRATED"}],
     });
 
-    dm.addStaticData(out,"ench",BindCurseEID);
+    dm.addData(out,"ench",BindCurseEID);
     return enchData;
 }

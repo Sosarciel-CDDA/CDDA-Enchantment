@@ -94,6 +94,6 @@ async function Knockback(dm) {
         ondamage_eocs: [onDmgEoc.id],
         derived_from: ["bash", 1]
     };
-    dm.addStaticData([onDmgEoc, dt, tspell_base, tspell_bash, tspell_subdamage, tspell_subknockback, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
+    dm.addData([onDmgEoc, dt, tspell_base, tspell_bash, tspell_subdamage, tspell_subknockback, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
 exports.Knockback = Knockback;
