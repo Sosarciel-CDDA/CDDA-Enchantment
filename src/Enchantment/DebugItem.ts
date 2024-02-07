@@ -2,7 +2,7 @@ import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { EocID, Flag, Generic } from "cdda-schema";
 import { EMDef } from "@src/EMDefine";
-import { INIT_ENCH_DATA_EOC_ID, enchEID } from "./Common";
+import { INIT_ENCH_DATA_EOC_ID, auxEID } from "./Common";
 
 
 
@@ -12,12 +12,12 @@ export async function debugItem(dm:DataManager,enchFlagList:Flag[]){
 
     const enchTestList = [
         [EMDef.genActEoc("EnchTestAdd",[{run_eocs:INIT_ENCH_DATA_EOC_ID},{
-            run_eoc_selector:[...enchFlagList.map((ench)=>enchEID(ench,"add")),NONEEocId],
+            run_eoc_selector:[...enchFlagList.map((ench)=>auxEID(ench,"add")),NONEEocId],
             names:[...enchFlagList.map((ench)=>ench.name as string),"算了"],
             hide_failing:true
         }]),"添加附魔"],
         [EMDef.genActEoc("EnchTestRemove",[{
-            run_eoc_selector:[...enchFlagList.map((ench)=>enchEID(ench,"remove")),NONEEocId],
+            run_eoc_selector:[...enchFlagList.map((ench)=>auxEID(ench,"remove")),NONEEocId],
             names:[...enchFlagList.map((ench)=>ench.name as string),"算了"],
             hide_failing:true
         }]),"移除附魔"],

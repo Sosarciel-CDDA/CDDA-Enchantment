@@ -14,7 +14,7 @@ export async function identifySpell(dm:DataManager){
     const spellId = EMDef.genSpellID("RandIdentify");
     const randIdentifyEoc = EMDef.genActEoc("RandIdentify_eoc",[
         {run_eocs:INIT_ENCH_DATA_EOC_ID},
-        {math:["_identSpellCount","=",`u_val('spell_level', 'spell: ${spellId}') / 2 + 1`]},
+        {math:["_identSpellCount","=",`u_spell_level('${spellId}') / 2 + 1`]},
         {u_run_inv_eocs:"all",
         true_eocs:{
             id:EMDef.genEOCID("RandIdebtify_eoc_sub"),

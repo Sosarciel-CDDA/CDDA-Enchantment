@@ -44,8 +44,8 @@ async function Fragile(dm) {
         intensity_effect: [enchEffect.id],
         ench_type: ["armor"],
         lvl: [],
-        add_effects: [{ run_eocs: (0, Common_1.enchEID)(BindCurse_1.BindCurseLvlFlagId, "add") }],
-        remove_effects: [{ run_eocs: (0, Common_1.enchEID)(BindCurse_1.BindCurseLvlFlagId, "remove") }]
+        add_effects: [{ run_eocs: (0, Common_1.auxEID)(BindCurse_1.BindCurseLvlFlagId, "add") }],
+        remove_effects: [{ run_eocs: (0, Common_1.auxEID)(BindCurse_1.BindCurseLvlFlagId, "remove") }]
     };
     out.push(enchData.main);
     //构造等级变体

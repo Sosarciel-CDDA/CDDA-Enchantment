@@ -21,6 +21,23 @@ export async function Knockback(dm:DataManager) {
         lvl:[]
     };
     out.push(enchData.main);
+    //触发法术
+    const tspell:Spell = {
+        id:EMDef.genSpellID(`${KnockbackEID}_Trigger`),
+        type:"SPELL",
+        flags:[...CON_SPELL_FLAG],
+        min_damage:1,
+        max_damage:KnockbackMaxLvl,
+        damage_increment:1,
+        max_level:KnockbackMaxLvl-1,
+        damage_type:"Knockback" as DamageTypeID,
+        effect:"attack",
+        shape:"blast",
+        valid_targets:["ally","hostile","self"],
+        name:`${enchName} 附魔触发法术`,
+        description: `${enchName} 附魔触发法术`
+    }
+    out.push(tspell);
     //构造等级变体
     for(let i=1;i<=KnockbackMaxLvl;i++){
         const subName = `${enchName} ${numToRoman(i)}`;
@@ -31,24 +48,10 @@ export async function Knockback(dm:DataManager) {
             name:subName,
             info:genEnchInfo("mixed",subName,`这件物品可以造成 ${i} 点击退伤害`),
         };
-        //触发法术
-        const tspell:Spell = {
-            id:EMDef.genSpellID(`${KnockbackEID}_${i}_Trigger`),
-            type:"SPELL",
-            flags:[...CON_SPELL_FLAG],
-            min_damage:i,
-            max_damage:i,
-            damage_type:"Knockback" as DamageTypeID,
-            effect:"attack",
-            shape:"blast",
-            valid_targets:["ally","hostile","self"],
-            name:`${subName} 附魔触发法术`,
-            description: `${subName} 附魔触发法术`
-        }
         //触发eoc
         const teoc = genWieldTrigger(dm,ench.id,"TryMeleeAttack",[
-            {npc_location_variable:{global_val:`${KnockbackEID}_loc`}},
-            {u_cast_spell:{id:tspell.id},loc:{global_val:`${KnockbackEID}_loc`}}
+            {npc_location_variable:{context_val:`${KnockbackEID}_loc`}},
+            {u_cast_spell:{id:tspell.id,min_level:i-1},loc:{context_val:`${KnockbackEID}_loc`}}
         ])
         //加入输出
         out.push(ench,tspell,teoc);

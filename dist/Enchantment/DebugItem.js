@@ -8,12 +8,12 @@ async function debugItem(dm, enchFlagList) {
     const NONEEocId = "EnchTestNone";
     const enchTestList = [
         [EMDefine_1.EMDef.genActEoc("EnchTestAdd", [{ run_eocs: Common_1.INIT_ENCH_DATA_EOC_ID }, {
-                    run_eoc_selector: [...enchFlagList.map((ench) => (0, Common_1.enchEID)(ench, "add")), NONEEocId],
+                    run_eoc_selector: [...enchFlagList.map((ench) => (0, Common_1.auxEID)(ench, "add")), NONEEocId],
                     names: [...enchFlagList.map((ench) => ench.name), "算了"],
                     hide_failing: true
                 }]), "添加附魔"],
         [EMDefine_1.EMDef.genActEoc("EnchTestRemove", [{
-                    run_eoc_selector: [...enchFlagList.map((ench) => (0, Common_1.enchEID)(ench, "remove")), NONEEocId],
+                    run_eoc_selector: [...enchFlagList.map((ench) => (0, Common_1.auxEID)(ench, "remove")), NONEEocId],
                     names: [...enchFlagList.map((ench) => ench.name), "算了"],
                     hide_failing: true
                 }]), "移除附魔"],

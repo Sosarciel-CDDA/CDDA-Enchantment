@@ -13,7 +13,8 @@ async function createEnchantment(dm) {
         ...await (0, armor_1.armorEnch)(dm),
     ]);
     //预处理并展开附魔flag
-    const enchFlagList = await (0, Common_1.prepareProc)(dm, enchDataList);
+    const enchFlagList = await (0, Common_1.flatEnchFlag)(enchDataList);
+    await (0, Common_1.prepareProc)(dm, enchDataList);
     //生成调试道具
     await (0, DebugItem_1.debugItem)(dm, enchFlagList);
     await (0, IdentifySpell_1.identifySpell)(dm);

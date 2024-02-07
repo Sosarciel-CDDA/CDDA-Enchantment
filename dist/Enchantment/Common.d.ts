@@ -21,13 +21,15 @@ export declare const IS_CURSED_FLAG_ID: FlagID;
 export declare const IS_IDENTIFYED_FLAG_ID: FlagID;
 /**表示物品是含有附魔 需鉴定 */
 export declare const IS_ENCHED_FLAG_ID: FlagID;
-/**通用eoc的id */
-export declare function enchEID(flag: Flag | FlagID, t: "add" | "remove"): EocID;
+/**辅助eoc的id 对 beta 增减某个附魔 */
+export declare function auxEID(flag: Flag | FlagID, t: "add" | "remove"): EocID;
 /**附魔强度id */
 export declare function enchInsVar(ench: EnchData, t: "u" | "n"): string;
 /**附魔的等级flagID */
 export declare function enchLvlID(baseID: string, lvl: number): FlagID;
-/**随机鉴定EocID
+/**鉴定EocID
+ * 对 beta 进行鉴定
+ * 随机添加附魔
  * u为角色 n为物品
  */
 export declare const IDENTIFY_EOC_ID: EocID;
@@ -42,4 +44,6 @@ export declare const UPGRADE_ENCH_CACHE_EOC_ID: EocID;
 export declare const INIT_ENCH_DATA_EOC_ID: EocID;
 /**移除诅咒EocID */
 export declare const REMOVE_CURSE_EOC_ID: EocID;
-export declare function prepareProc(dm: DataManager, enchDataList: EnchData[]): Promise<Flag[]>;
+export declare function prepareProc(dm: DataManager, enchDataList: EnchData[]): Promise<void>;
+/**展开附魔等级变体flag */
+export declare function flatEnchFlag(enchDataList: EnchData[]): Promise<Flag[]>;

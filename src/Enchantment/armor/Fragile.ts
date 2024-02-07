@@ -4,7 +4,7 @@ import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
 import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
-import { enchEID, enchLvlID } from "../Common";
+import { auxEID, enchLvlID } from "../Common";
 import { BindCurseEID, BindCurseLvlFlagId } from "./BindCurse";
 import { ProtectionEID, ProtectionMaxLvl } from "./Protection";
 
@@ -49,8 +49,8 @@ export async function Fragile(dm:DataManager) {
         intensity_effect: [enchEffect.id],
         ench_type:["armor"],
         lvl:[],
-        add_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"add")}],
-        remove_effects:[{run_eocs:enchEID(BindCurseLvlFlagId,"remove")}]
+        add_effects:[{run_eocs:auxEID(BindCurseLvlFlagId,"add")}],
+        remove_effects:[{run_eocs:auxEID(BindCurseLvlFlagId,"remove")}]
     };
     out.push(enchData.main);
     //构造等级变体

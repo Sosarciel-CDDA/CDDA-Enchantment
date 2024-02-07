@@ -12,7 +12,7 @@ export async function removeCurseSpell(dm:DataManager){
     //随机鉴定
     const spellId = EMDef.genSpellID("RandRemoveCurse");
     const randRemoveCurseEoc = EMDef.genActEoc("RandRemoveCurse_eoc",[
-        {math:["_removeCurseSpellCount","=",`u_val('spell_level', 'spell: ${spellId}') / 4 + 1`]},
+        {math:["_removeCurseSpellCount","=",`u_spell_level('${spellId}') / 4 + 1`]},
         {u_run_inv_eocs:"all",
         true_eocs:{
             id:EMDef.genEOCID("RandIdebtify_eoc_sub"),

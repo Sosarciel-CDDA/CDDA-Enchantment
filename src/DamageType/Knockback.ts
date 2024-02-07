@@ -76,8 +76,8 @@ export async function Knockback(dm:DataManager){
                 id:EMDef.genEOCID(`${did}_OnDamage_each`),
                 eoc_type:"ACTIVATION",
                 effect:[
-                    {npc_location_variable:{global_val:"tmp_knockback_loc"}},
-                    {u_cast_spell:{id:tspell_base.id},loc:{global_val:"tmp_knockback_loc"}},
+                    {npc_location_variable:{context_val:"tmp_knockback_loc"}},
+                    {u_cast_spell:{id:tspell_base.id},loc:{context_val:"tmp_knockback_loc"}},
                     {npc_cast_spell:{id:tspell_bash.id}},
                     {npc_cast_spell:{id:tspell_subdamage.id}},
                     {npc_cast_spell:{id:tspell_subknockback.id}},
