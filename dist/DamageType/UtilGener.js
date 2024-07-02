@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.genDIO = exports.genArmorMut = exports.genAddEffEoc = exports.genTriggerEffect = void 0;
+exports.genTriggerEffect = genTriggerEffect;
+exports.genAddEffEoc = genAddEffEoc;
+exports.genArmorMut = genArmorMut;
+exports.genDIO = genDIO;
 const EMDefine_1 = require("../EMDefine");
 /**修改效果为触发性效果, 并创建触发Eoc
  * EocID为 `${effect.id}_Trigger`
@@ -46,7 +49,6 @@ function genTriggerEffect(dm, effect, hook, mode, eocEffects, duration, conditio
     dm.addInvokeEoc(hook, 0, triggerEoc);
     return triggerEoc;
 }
-exports.genTriggerEffect = genTriggerEffect;
 /**创建添加效果的Eoc
  * EocID为 `${effect.id}_AddEffect`
  * 添加层数为 全局变量 `${effect.id}_count`
@@ -62,7 +64,6 @@ function genAddEffEoc(effectID, duration, eocEffects) {
     ], undefined, true);
     return effecteoc;
 }
-exports.genAddEffEoc = genAddEffEoc;
 /**修改护甲 并生成添加护甲的变异
  * ID为`${armor.id}_MUT`
  */
@@ -93,7 +94,6 @@ function genArmorMut(armor) {
     };
     return mut;
 }
-exports.genArmorMut = genArmorMut;
 /**根据伤害生成一个DamageInfoOrder */
 function genDIO(dt) {
     return {
@@ -101,4 +101,3 @@ function genDIO(dt) {
         type: "damage_info_order"
     };
 }
-exports.genDIO = genDIO;

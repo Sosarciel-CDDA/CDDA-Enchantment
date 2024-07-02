@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flatEnchFlag = exports.prepareProc = exports.REMOVE_CURSE_EOC_ID = exports.INIT_ENCH_DATA_EOC_ID = exports.UPGRADE_ENCH_CACHE_EOC_ID = exports.IDENTIFY_EOC_ID = exports.enchLvlID = exports.enchInsVar = exports.auxEID = exports.IS_ENCHED_FLAG_ID = exports.IS_IDENTIFYED_FLAG_ID = exports.IS_CURSED_FLAG_ID = exports.ITEM_ENCH_TYPE = exports.N_ENCH_POINT_MAX = exports.N_ENCH_POINT = exports.N_COMPLETE_ENCH_INIT = exports.ENCH_ONE_IN = exports.MAX_ENCH_COUNT = exports.MAX_ENCH_POINT = void 0;
+exports.REMOVE_CURSE_EOC_ID = exports.INIT_ENCH_DATA_EOC_ID = exports.UPGRADE_ENCH_CACHE_EOC_ID = exports.IDENTIFY_EOC_ID = exports.IS_ENCHED_FLAG_ID = exports.IS_IDENTIFYED_FLAG_ID = exports.IS_CURSED_FLAG_ID = exports.ITEM_ENCH_TYPE = exports.N_ENCH_POINT_MAX = exports.N_ENCH_POINT = exports.N_COMPLETE_ENCH_INIT = exports.ENCH_ONE_IN = exports.MAX_ENCH_COUNT = exports.MAX_ENCH_POINT = void 0;
+exports.auxEID = auxEID;
+exports.enchInsVar = enchInsVar;
+exports.enchLvlID = enchLvlID;
+exports.prepareProc = prepareProc;
+exports.flatEnchFlag = flatEnchFlag;
 const EnchInterface_1 = require("./EnchInterface");
 const EMDefine_1 = require("../EMDefine");
 /**默认的最大附魔点数 */
@@ -28,17 +33,14 @@ function auxEID(flag, t) {
     const id = typeof flag == "string" ? flag : flag.id;
     return EMDefine_1.EMDef.genEOCID(`${id}_${t}`);
 }
-exports.auxEID = auxEID;
 /**附魔强度id */
 function enchInsVar(ench, t) {
     return `${t}_${ench.id}`;
 }
-exports.enchInsVar = enchInsVar;
 /**附魔的等级flagID */
 function enchLvlID(baseID, lvl) {
     return EMDefine_1.EMDef.genFlagID(`${baseID}_${lvl}_Ench`);
 }
-exports.enchLvlID = enchLvlID;
 /**鉴定EocID
  * 对 beta 进行鉴定
  * 随机添加附魔
@@ -125,8 +127,8 @@ async function prepareProc(dm, enchDataList) {
             out.push(teoc);
         }
     });
-    //鉴定穿戴的物品
-    const identifyWear = EMDefine_1.EMDef.genActEoc("IdentifyEnch_Wear", [
+    //鉴定使用的物品 物品为 beta
+    const identifyWear = EMDefine_1.EMDef.genActEoc("IdentifyEnch_Use", [
         { run_eocs: [exports.INIT_ENCH_DATA_EOC_ID, exports.IDENTIFY_EOC_ID] },
     ], { not: { npc_has_flag: exports.IS_IDENTIFYED_FLAG_ID } });
     dm.addInvokeEoc("WearItem", 2, identifyWear);
@@ -158,7 +160,6 @@ async function prepareProc(dm, enchDataList) {
     out.push(cursedFlag, identedFlag, enchedFlag);
     dm.addData(out, "Common");
 }
-exports.prepareProc = prepareProc;
 /**生成辅助eoc */
 function auxEoc(enchDataList) {
     const out = [];
@@ -317,4 +318,3 @@ async function flatEnchFlag(enchDataList) {
     enchDataList.forEach((enchset) => enchset.lvl.forEach((lvlobj) => enchFlagList.push(lvlobj.ench)));
     return enchFlagList;
 }
-exports.flatEnchFlag = flatEnchFlag;

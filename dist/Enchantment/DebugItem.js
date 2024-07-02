@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.debugItem = void 0;
+exports.debugItem = debugItem;
 const EMDefine_1 = require("../EMDefine");
 const Common_1 = require("./Common");
 async function debugItem(dm, enchFlagList) {
@@ -55,4 +55,3 @@ async function debugItem(dm, enchFlagList) {
     out.push(EnchTestTool);
     dm.addData(out, "EnchTest");
 }
-exports.debugItem = debugItem;

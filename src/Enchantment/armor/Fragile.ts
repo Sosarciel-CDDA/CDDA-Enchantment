@@ -2,7 +2,7 @@ import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } 
 import { CON_SPELL_FLAG, EMDef } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
+import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genEnchPrefix, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
 import { auxEID, enchLvlID } from "../Common";
 import { BindCurseEID, BindCurseLvlFlagId } from "./BindCurse";
@@ -62,6 +62,7 @@ export async function Fragile(dm:DataManager) {
             id:enchLvlID(FragileEID,i),
             name:subName,
             info:genEnchInfo("bad",subName,`这件物品会增加 ${i*5}% 所受到的物理伤害`),
+            item_prefix:genEnchPrefix('bad',subName),
         };
         //加入输出
         out.push(ench);

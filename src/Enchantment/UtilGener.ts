@@ -73,8 +73,15 @@ export function genMainFlag(enchId:string,enchName:string):Flag{
 }
 
 /**生成附魔说明 */
-export function genEnchInfo(color:Color|MessageRatType,name:string,desc:string){
+export function genEnchInfo(color:Color|"good"|"bad",name:string,desc:string){
     if(ColorList.includes(color as Color))
         return `<color_${color}>[${name}]</color> ${desc}`;
     return `<${color}>[${name}]</${color}> ${desc}`;
+}
+
+/**生成附魔前缀 */
+export function genEnchPrefix(color:Color|"good"|"bad",name:string){
+    if(ColorList.includes(color as Color))
+        return `<color_${color}>[${name}]</color> `;
+    return `<${color}>[${name}]</${color}> `;
 }

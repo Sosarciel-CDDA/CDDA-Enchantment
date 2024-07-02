@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Discharge = exports.Electrify = void 0;
+exports.Electrify = Electrify;
+exports.Discharge = Discharge;
 const UtilGener_1 = require("./UtilGener");
 const EMDefine_1 = require("../EMDefine");
 //感电
@@ -52,7 +53,6 @@ async function Electrify(dm) {
     };
     dm.addData([eff, onDmgEoc, dt, exteff, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
-exports.Electrify = Electrify;
 //放电
 async function Discharge(dm) {
     const did = "Discharge";
@@ -94,4 +94,3 @@ async function Discharge(dm) {
     };
     dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
-exports.Discharge = Discharge;

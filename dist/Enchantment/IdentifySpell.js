@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.identifySpell = void 0;
+exports.identifySpell = identifySpell;
 const EMDefine_1 = require("../EMDefine");
 const Common_1 = require("./Common");
 const EnchInterface_1 = require("./EnchInterface");
@@ -70,4 +70,3 @@ async function identifySpell(dm) {
     out.push(selIdentifyEoc, selIdentify);
     dm.addData(out, "IdentifySpell");
 }
-exports.identifySpell = identifySpell;

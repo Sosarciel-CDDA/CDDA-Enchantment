@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Knockback = exports.KnockbackMaxLvl = exports.KnockbackEID = void 0;
+exports.KnockbackMaxLvl = exports.KnockbackEID = void 0;
+exports.Knockback = Knockback;
 const EMDefine_1 = require("../../EMDefine");
 const UtilGener_1 = require("../UtilGener");
 const Common_1 = require("../Common");
@@ -17,6 +18,23 @@ async function Knockback(dm) {
         lvl: []
     };
     out.push(enchData.main);
+    //触发法术
+    const tspell = {
+        id: EMDefine_1.EMDef.genSpellID(`${exports.KnockbackEID}_Trigger`),
+        type: "SPELL",
+        flags: [...EMDefine_1.CON_SPELL_FLAG],
+        min_damage: 1,
+        max_damage: exports.KnockbackMaxLvl,
+        damage_increment: 1,
+        max_level: exports.KnockbackMaxLvl - 1,
+        damage_type: "Knockback",
+        effect: "attack",
+        shape: "blast",
+        valid_targets: ["ally", "hostile", "self"],
+        name: `${enchName} 附魔触发法术`,
+        description: `${enchName} 附魔触发法术`
+    };
+    out.push(tspell);
     //构造等级变体
     for (let i = 1; i <= exports.KnockbackMaxLvl; i++) {
         const subName = `${enchName} ${(0, UtilGener_1.numToRoman)(i)}`;
@@ -25,29 +43,16 @@ async function Knockback(dm) {
             type: "json_flag",
             id: (0, Common_1.enchLvlID)(exports.KnockbackEID, i),
             name: subName,
-            info: (0, UtilGener_1.genEnchInfo)("mixed", subName, `这件物品可以造成 ${i} 点击退伤害`),
-        };
-        //触发法术
-        const tspell = {
-            id: EMDefine_1.EMDef.genSpellID(`${exports.KnockbackEID}_${i}_Trigger`),
-            type: "SPELL",
-            flags: [...EMDefine_1.CON_SPELL_FLAG],
-            min_damage: i,
-            max_damage: i,
-            damage_type: "Knockback",
-            effect: "attack",
-            shape: "blast",
-            valid_targets: ["ally", "hostile", "self"],
-            name: `${subName} 附魔触发法术`,
-            description: `${subName} 附魔触发法术`
+            info: (0, UtilGener_1.genEnchInfo)('pink', subName, `这件物品可以造成 ${i} 点击退伤害`),
+            item_prefix: (0, UtilGener_1.genEnchPrefix)('pink', subName),
         };
         //触发eoc
         const teoc = (0, UtilGener_1.genWieldTrigger)(dm, ench.id, "TryMeleeAttack", [
-            { npc_location_variable: { global_val: `${exports.KnockbackEID}_loc` } },
-            { u_cast_spell: { id: tspell.id }, loc: { global_val: `${exports.KnockbackEID}_loc` } }
+            { npc_location_variable: { context_val: `${exports.KnockbackEID}_loc` } },
+            { u_cast_spell: { id: tspell.id, min_level: i - 1 }, loc: { context_val: `${exports.KnockbackEID}_loc` } }
         ]);
         //加入输出
-        out.push(ench, tspell, teoc);
+        out.push(ench, teoc);
         enchData.lvl.push({
             ench,
             weight: exports.KnockbackMaxLvl + 1 - i,
@@ -59,4 +64,3 @@ async function Knockback(dm) {
     dm.addData(out, "ench", exports.KnockbackEID);
     return enchData;
 }
-exports.Knockback = Knockback;

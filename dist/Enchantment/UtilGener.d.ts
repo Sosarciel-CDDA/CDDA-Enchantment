@@ -1,5 +1,5 @@
 import { CharHook, DataManager } from "cdda-event";
-import { BoolObj, Color, EocEffect, Flag, FlagID, MessageRatType } from "cdda-schema";
+import { BoolObj, Color, EocEffect, Flag, FlagID } from "cdda-schema";
 import { EnchData } from "./EnchInterface";
 /**手持触发 */
 export declare function genWieldTrigger(dm: DataManager, flagId: FlagID, hook: CharHook, effects: EocEffect[], condition?: BoolObj): import("cdda-schema").Eoc;
@@ -11,4 +11,6 @@ export declare function genEnchConfilcts(enchData: EnchData, baseID: string, max
 /**生成主附魔flag */
 export declare function genMainFlag(enchId: string, enchName: string): Flag;
 /**生成附魔说明 */
-export declare function genEnchInfo(color: Color | MessageRatType, name: string, desc: string): string;
+export declare function genEnchInfo(color: Color | "good" | "bad", name: string, desc: string): string;
+/**生成附魔前缀 */
+export declare function genEnchPrefix(color: Color | "good" | "bad", name: string): string;

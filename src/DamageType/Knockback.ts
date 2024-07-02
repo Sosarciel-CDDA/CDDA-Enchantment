@@ -71,7 +71,6 @@ export async function Knockback(dm:DataManager){
         effect:[
             {u_message:`${dname} 触发 <context_val:total_damage> <context_val:damage_taken>`},
             {math:[tmddmg,"=","_total_damage"]},
-            {set_condition:{global_val:"knockback_cond"},condition:{math:[tmddmg,">","0"]}},
             {run_eoc_until:{
                 id:EMDef.genEOCID(`${did}_OnDamage_each`),
                 eoc_type:"ACTIVATION",
@@ -83,7 +82,7 @@ export async function Knockback(dm:DataManager){
                     {npc_cast_spell:{id:tspell_subknockback.id}},
                     {math:[tmddmg,"-=","1"]},
                 ]
-            },condition:{global_val:"knockback_cond"}},
+            },condition:{math:[tmddmg,">","0"]}},
         ],
         condition:{math:["_total_damage",">","0"]}
     }

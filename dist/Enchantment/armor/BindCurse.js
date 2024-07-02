@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BindCurse = exports.BindCurseLvlFlagId = exports.BindCurseEID = void 0;
+exports.BindCurseLvlFlagId = exports.BindCurseEID = void 0;
+exports.BindCurse = BindCurse;
 const UtilGener_1 = require("../UtilGener");
 const Common_1 = require("../Common");
 exports.BindCurseEID = "BindCurse";
@@ -24,6 +25,7 @@ async function BindCurse(dm) {
         id: exports.BindCurseLvlFlagId,
         name: enchName,
         info: (0, UtilGener_1.genEnchInfo)("bad", enchName, `这件物品在移除诅咒前无法脱下`),
+        item_prefix: (0, UtilGener_1.genEnchPrefix)('bad', enchName),
     };
     //加入输出
     out.push(ench);
@@ -37,4 +39,3 @@ async function BindCurse(dm) {
     dm.addData(out, "ench", exports.BindCurseEID);
     return enchData;
 }
-exports.BindCurse = BindCurse;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createDamageType = void 0;
+exports.createDamageType = createDamageType;
 const Electrify_1 = require("./Electrify");
 const Trauma_1 = require("./Trauma");
 const Freeze_1 = require("./Freeze");
@@ -13,4 +13,3 @@ async function createDamageType(dm) {
     await (0, Freeze_1.Freeze)(dm);
     await (0, Knockback_1.Knockback)(dm);
 }
-exports.createDamageType = createDamageType;

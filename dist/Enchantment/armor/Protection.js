@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Protection = exports.ProtectionMaxLvl = exports.ProtectionEID = void 0;
+exports.ProtectionMaxLvl = exports.ProtectionEID = void 0;
+exports.Protection = Protection;
 const EMDefine_1 = require("../../EMDefine");
 const UtilGener_1 = require("../UtilGener");
 const Common_1 = require("../Common");
@@ -54,6 +55,7 @@ async function Protection(dm) {
             id: (0, Common_1.enchLvlID)(exports.ProtectionEID, i),
             name: subName,
             info: (0, UtilGener_1.genEnchInfo)("good", subName, `这件物品可以降低 ${i * 5}% 所受到的物理伤害`),
+            item_prefix: (0, UtilGener_1.genEnchPrefix)('good', subName),
         };
         //加入输出
         out.push(ench);
@@ -70,4 +72,3 @@ async function Protection(dm) {
     dm.addData(out, "ench", exports.ProtectionEID);
     return enchData;
 }
-exports.Protection = Protection;

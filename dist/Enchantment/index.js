@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createEnchantment = void 0;
+exports.createEnchantment = createEnchantment;
 const DebugItem_1 = require("./DebugItem");
 const Common_1 = require("./Common");
 const weapons_1 = require("./weapons");
@@ -20,4 +20,3 @@ async function createEnchantment(dm) {
     await (0, IdentifySpell_1.identifySpell)(dm);
     await (0, RemoveCurseSpell_1.removeCurseSpell)(dm);
 }
-exports.createEnchantment = createEnchantment;

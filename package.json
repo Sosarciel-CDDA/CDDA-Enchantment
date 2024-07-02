@@ -4,8 +4,8 @@
   "description": "cdda的附魔mod",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && tsc-alias",
-    "build": "npm run compile && node --trace-warnings index"
+    "compile": "powershell scripts/compile",
+    "build": "powershell scripts/build"
   },
   "keywords": [
     "cdda"

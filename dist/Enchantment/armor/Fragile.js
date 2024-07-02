@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Fragile = exports.FragileMaxLvl = exports.FragileEID = void 0;
+exports.FragileMaxLvl = exports.FragileEID = void 0;
+exports.Fragile = Fragile;
 const EMDefine_1 = require("../../EMDefine");
 const UtilGener_1 = require("../UtilGener");
 const Common_1 = require("../Common");
@@ -57,6 +58,7 @@ async function Fragile(dm) {
             id: (0, Common_1.enchLvlID)(exports.FragileEID, i),
             name: subName,
             info: (0, UtilGener_1.genEnchInfo)("bad", subName, `这件物品会增加 ${i * 5}% 所受到的物理伤害`),
+            item_prefix: (0, UtilGener_1.genEnchPrefix)('bad', subName),
         };
         //加入输出
         out.push(ench);
@@ -72,4 +74,3 @@ async function Fragile(dm) {
     dm.addData(out, "ench", exports.FragileEID);
     return enchData;
 }
-exports.Fragile = Fragile;

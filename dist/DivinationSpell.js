@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createDivinationSpell = void 0;
+exports.createDivinationSpell = createDivinationSpell;
 const OMNameIDMap = {
     //生物
     "蚁巢": { om_terrain: "anthill", om_special: "anthill" },
@@ -275,4 +275,3 @@ async function createDivinationSpell(dm) {
     });
     dm.addData(out, "common_resource", "DivinationSpell");
 }
-exports.createDivinationSpell = createDivinationSpell;

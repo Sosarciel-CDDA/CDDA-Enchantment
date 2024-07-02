@@ -2,7 +2,7 @@ import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } 
 import { CON_SPELL_FLAG, EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
+import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genEnchPrefix, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
 import { enchLvlID } from "../Common";
 import { FragileEID, FragileMaxLvl } from "./Fragile";
@@ -59,6 +59,7 @@ export async function Protection(dm:DataManager) {
             id:enchLvlID(ProtectionEID,i),
             name:subName,
             info:genEnchInfo("good",subName,`这件物品可以降低 ${i*5}% 所受到的物理伤害`),
+            item_prefix:genEnchPrefix('good',subName),
         };
         //加入输出
         out.push(ench);

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.armorEnch = void 0;
+exports.armorEnch = armorEnch;
 const Protection_1 = require("./Protection");
 const BindCurse_1 = require("./BindCurse");
 const Fragile_1 = require("./Fragile");
@@ -11,4 +11,3 @@ async function armorEnch(dm) {
         await (0, BindCurse_1.BindCurse)(dm),
     ]);
 }
-exports.armorEnch = armorEnch;

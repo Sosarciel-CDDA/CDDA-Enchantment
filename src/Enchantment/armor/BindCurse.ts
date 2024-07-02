@@ -1,7 +1,7 @@
 import { Flag } from "cdda-schema";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genEnchInfo, genMainFlag } from "../UtilGener";
+import { genEnchInfo, genEnchPrefix, genMainFlag } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
 import { enchLvlID } from "../Common";
 
@@ -28,6 +28,7 @@ export async function BindCurse(dm:DataManager) {
         id:BindCurseLvlFlagId,
         name:enchName,
         info:genEnchInfo("bad",enchName,`这件物品在移除诅咒前无法脱下`),
+        item_prefix:genEnchPrefix('bad',enchName),
     };
     //加入输出
     out.push(ench);

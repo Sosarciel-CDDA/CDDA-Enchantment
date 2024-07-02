@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeCurseSpell = void 0;
+exports.removeCurseSpell = removeCurseSpell;
 const Common_1 = require("./Common");
 const EMDefine_1 = require("../EMDefine");
 async function removeCurseSpell(dm) {
@@ -69,4 +69,3 @@ async function removeCurseSpell(dm) {
     out.push(removeCurse, selRemove);
     dm.addData(out, "IdentifySpell");
 }
-exports.removeCurseSpell = removeCurseSpell;

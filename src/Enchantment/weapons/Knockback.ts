@@ -2,7 +2,7 @@ import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } 
 import { CON_SPELL_FLAG, EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";
 import { JObject } from "@zwa73/utils";
-import { genBaseConfilcts, genEnchInfo, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
+import { genBaseConfilcts, genEnchInfo, genEnchPrefix, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";
 import { enchLvlID } from "../Common";
 
@@ -46,7 +46,8 @@ export async function Knockback(dm:DataManager) {
             type:"json_flag",
             id:enchLvlID(KnockbackEID,i),
             name:subName,
-            info:genEnchInfo("mixed",subName,`这件物品可以造成 ${i} 点击退伤害`),
+            info:genEnchInfo('pink',subName,`这件物品可以造成 ${i} 点击退伤害`),
+            item_prefix:genEnchPrefix('pink',subName),
         };
         //触发eoc
         const teoc = genWieldTrigger(dm,ench.id,"TryMeleeAttack",[
@@ -54,7 +55,7 @@ export async function Knockback(dm:DataManager) {
             {u_cast_spell:{id:tspell.id,min_level:i-1},loc:{context_val:`${KnockbackEID}_loc`}}
         ])
         //加入输出
-        out.push(ench,tspell,teoc);
+        out.push(ench,teoc);
         enchData.lvl.push({
             ench,
             weight:KnockbackMaxLvl+1-i,

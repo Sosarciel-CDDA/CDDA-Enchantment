@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Laceration = exports.Trauma = void 0;
+exports.Trauma = Trauma;
+exports.Laceration = Laceration;
 const UtilGener_1 = require("./UtilGener");
 const EMDefine_1 = require("../EMDefine");
 //创伤
@@ -71,7 +72,6 @@ async function Trauma(dm) {
     };
     dm.addData([tspell, eff, onDmgEoc, dt, (0, UtilGener_1.genDIO)(dt), exteff], "damage_type", did);
 }
-exports.Trauma = Trauma;
 //撕裂
 async function Laceration(dm) {
     const did = "Laceration";
@@ -109,4 +109,3 @@ async function Laceration(dm) {
     };
     dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
-exports.Laceration = Laceration;

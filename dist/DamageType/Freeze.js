@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Freeze = void 0;
+exports.Freeze = Freeze;
 const UtilGener_1 = require("./UtilGener");
 const EMDefine_1 = require("../EMDefine");
 //冻结
@@ -39,4 +39,3 @@ async function Freeze(dm) {
     };
     dm.addData([onDmgEoc, dt, tspell, (0, UtilGener_1.genDIO)(dt)], "damage_type", did);
 }
-exports.Freeze = Freeze;
