@@ -1,0 +1,47 @@
+import { Flag } from "cdda-schema";
+import { DataManager } from "cdda-event";
+import { JObject } from "@zwa73/utils";
+import { genEnchInfo, genEnchPrefix, genMainFlag } from "../UtilGener";
+import { EnchData } from "../EnchInterface";
+import { enchLvlID } from "../Common";
+
+
+
+
+
+
+export const RandomTeleportationEID = "RandomTeleportation";
+export const RandomTeleportationLvlFlagId = enchLvlID(RandomTeleportationEID,1);
+export async function RandomTeleportation(dm:DataManager) {
+    const enchName = "自身出血";
+    const out:JObject[]=[];
+
+    //构造附魔集
+    const enchData:EnchData={
+        id:RandomTeleportationEID,
+        main:genMainFlag(RandomTeleportationEID,enchName),
+        ench_type:["armor"],
+        lvl:[],
+        is_curse:true
+    };
+    out.push(enchData.main);
+    //构造等级变体
+    //变体ID
+    const ench:Flag = {
+        type:"json_flag",
+        id:RandomTeleportationLvlFlagId,
+        name:enchName,
+        info:genEnchInfo("bad",enchName,`这件物品在移除诅咒前无法脱下`),
+        item_prefix:genEnchPrefix('bad',enchName),
+    };
+    //加入输出
+    out.push(ench);
+    enchData.lvl.push({ench,
+        weight:ProtectionMaxLvl+1-i,
+        intensity:i,
+        point:i*10,
+    });
+
+    dm.addData(out,"ench",BindCurseEID);
+    return enchData;
+}
