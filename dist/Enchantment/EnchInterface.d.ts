@@ -1,16 +1,16 @@
-import { EffectID, EocEffect, Flag, InvSearchData } from "cdda-schema";
+import { EffectID, EocEffect, Flag, ItemSearchData } from "cdda-schema";
 /**可用的附魔类型 列表 */
 export declare const VaildEnchTypeList: readonly ["weapons", "armor"];
 /**可用的附魔类型 */
 export type VaildEnchType = typeof VaildEnchTypeList[number];
 /**附魔类型映射 */
-export declare const EnchTypeSearchDataMap: Record<VaildEnchType, InvSearchData[]>;
+export declare const EnchTypeSearchDataMap: Record<VaildEnchType, ItemSearchData[]>;
 /**附魔强度效果的生效时机 列表 */
 export declare const EffectActiveCondList: readonly ["wield", "worn"];
 /**附魔强度效果的生效时机 */
 export type EffectActiveCond = typeof EffectActiveCondList[number];
 /**生效时机映射 */
-export declare const EffectActiveCondSearchDataMap: Record<EffectActiveCond, InvSearchData[]>;
+export declare const EffectActiveCondSearchDataMap: Record<EffectActiveCond, ItemSearchData[]>;
 /**附魔数据 */
 export type EnchData = {
     /**id */

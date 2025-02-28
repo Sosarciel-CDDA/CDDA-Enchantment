@@ -1,4 +1,4 @@
-import { BoolObj, Effect, EffectID, EocEffect, Flag, FlagID, InvSearchData } from "cdda-schema";
+import { BoolObj, Effect, EffectID, EocEffect, Flag, FlagID, ItemSearchData } from "cdda-schema";
 
 /**可用的附魔类型 列表 */
 export const VaildEnchTypeList = [
@@ -9,7 +9,7 @@ export const VaildEnchTypeList = [
 /**可用的附魔类型 */
 export type VaildEnchType = typeof VaildEnchTypeList[number];
 /**附魔类型映射 */
-export const EnchTypeSearchDataMap:Record<VaildEnchType,InvSearchData[]> = {
+export const EnchTypeSearchDataMap:Record<VaildEnchType,ItemSearchData[]> = {
     weapons :[{category:"weapons"}] ,
     armor   :[{category:"armor"}]   ,
     //food    :[{flags:["EATEN_HOT"]},{flags:["SMOKABLE"]}],
@@ -23,7 +23,7 @@ export const EffectActiveCondList = [
 /**附魔强度效果的生效时机 */
 export type EffectActiveCond = typeof EffectActiveCondList[number];
 /**生效时机映射 */
-export const EffectActiveCondSearchDataMap:Record<EffectActiveCond,InvSearchData[]> = {
+export const EffectActiveCondSearchDataMap:Record<EffectActiveCond,ItemSearchData[]> = {
     wield :[{wielded_only:true}] ,
     worn   :[{worn_only:true}]   ,
     //food    :[{flags:["EATEN_HOT"]},{flags:["SMOKABLE"]}],
