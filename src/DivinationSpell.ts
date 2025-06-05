@@ -1,8 +1,8 @@
-import { MissionDefinition, MissionDefinitionID, OMTMatchType } from "cdda-schema";
+import { MissionDefinition, MissionDefinitionID, OMTMatchType } from "@sosarciel-cdda/cdda-schema";
 
 import { JObject } from "@zwa73/utils";
-import { BoolObj, Eoc, EocID, Spell, SpellID, OvermapTerrainID, OverMapSpecialID } from "cdda-schema";
-import { DataManager } from "cdda-event";
+import { BoolObj, Eoc, EocID, Spell, SpellID, OvermapTerrainID, OverMapSpecialID } from "@sosarciel-cdda/cdda-schema";
+import { DataManager } from "@sosarciel-cdda/cdda-event";
 
 
 
