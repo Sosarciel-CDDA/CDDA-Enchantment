@@ -1,6 +1,6 @@
-import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } from "@sosarciel-cdda/sclema";
+import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Flag, FlagID, Spell } from "@sosarciel-cdda/schema";
 import { CON_SPELL_FLAG, EMDef } from "@src/EMDefine";
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { JObject } from "@zwa73/utils";
 import { genBaseConfilcts, genEnchConfilcts, genEnchInfo, genEnchPrefix, genMainFlag, genWieldTrigger, numToRoman } from "../UtilGener";
 import { EnchData } from "../EnchInterface";

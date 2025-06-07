@@ -1,4 +1,4 @@
-import { BoolObj, Effect, EffectID, EocEffect, Flag, FlagID, ItemSearchData } from "@sosarciel-cdda/sclema";
+import { BoolObj, Effect, EffectID, EocEffect, Flag, FlagID, ItemSearchData } from "@sosarciel-cdda/schema";
 
 /**可用的附魔类型 列表 */
 export const VaildEnchTypeList = [

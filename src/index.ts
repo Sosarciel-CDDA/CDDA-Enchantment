@@ -1,4 +1,4 @@
-import { DataManager } from "@sosarciel-cdda/event";
+import { DataManager } from ""@sosarciel-cdda/event";
 import { UtilFT } from '@zwa73/utils'
 import * as path from 'path';
 import { createDamageType } from "./DamageType";

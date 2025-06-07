@@ -1,4 +1,4 @@
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { Protection } from "./Protection";
 import { BindCurse } from "./BindCurse";
 import { Fragile } from "./Fragile";

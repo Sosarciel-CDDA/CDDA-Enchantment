@@ -1,4 +1,4 @@
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { EnchData } from "./EnchInterface";
 import { debugItem } from "./DebugItem";
 import { flatEnchFlag, prepareProc } from "./Common";

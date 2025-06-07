@@ -1,5 +1,5 @@
-import { Flag } from "@sosarciel-cdda/sclema";
-import { DataManager } from "cdda-event";
+import { Flag } from "@sosarciel-cdda/schema";
+import { DataManager } from "@sosarciel-cdda/event";
 import { JObject } from "@zwa73/utils";
 import { genEnchInfo, genEnchPrefix, genMainFlag } from "../UtilGener";
 import { EnchData } from "../EnchInterface";

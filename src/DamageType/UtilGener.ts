@@ -1,7 +1,7 @@
 
-import { Armor, BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID } from "@sosarciel-cdda/sclema";
+import { Armor, BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID } from "@sosarciel-cdda/schema";
 import { EMDef } from "@src/EMDefine";
-import { GlobalHook, DataManager } from "cdda-event";
+import { GlobalHook, DataManager } from "@sosarciel-cdda/event";
 
 /**修改效果为触发性效果, 并创建触发Eoc  
  * EocID为 `${effect.id}_Trigger`  

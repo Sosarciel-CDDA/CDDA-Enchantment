@@ -1,4 +1,4 @@
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { Discharge, Electrify } from "./Electrify";
 import { Laceration, Trauma } from "./Trauma";
 import { Freeze } from "./Freeze";

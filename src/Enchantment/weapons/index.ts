@@ -1,4 +1,4 @@
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { Knockback } from "./Knockback";
 
 

@@ -1,7 +1,7 @@
-import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "@sosarciel-cdda/sclema";
+import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "@sosarciel-cdda/schema";
 import { genDIO } from "./UtilGener";
 import { EMDef, MAX_NUM } from "@src/EMDefine";
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 
 //冻结
 export async function Freeze(dm:DataManager){

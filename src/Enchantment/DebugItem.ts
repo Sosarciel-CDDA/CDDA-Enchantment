@@ -1,6 +1,6 @@
-import { DataManager } from "cdda-event";
+import { DataManager } from "@sosarciel-cdda/event";
 import { JObject } from "@zwa73/utils";
-import { EocID, Flag, Generic } from "@sosarciel-cdda/sclema";
+import { EocID, Flag, Generic } from "@sosarciel-cdda/schema";
 import { EMDef } from "@src/EMDefine";
 import { INIT_ENCH_DATA_EOC_ID, auxEID } from "./Common";
 
