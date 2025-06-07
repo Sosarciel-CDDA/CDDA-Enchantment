@@ -1,5 +1,5 @@
 {
-  "name": "@sosarciel-cdda/cdda-enchantment",
+  "name": "@sosarciel-cdda/enchantment",
   "version": "1.0.0",
   "description": "cdda的附魔mod",
   "main": "index.js",
@@ -13,8 +13,8 @@
   "author": "zwa73",
   "license": "ISC",
   "dependencies": {
-    "@sosarciel-cdda/cdda-event": "^1.0.0",
-    "@sosarciel-cdda/cdda-schema": "^1.0.0",
+    "@sosarciel-cdda/event": "^1.0.0",
+    "@sosarciel-cdda/schema": "^1.0.0",
     "@zwa73/utils": "*"
   }
 }
