@@ -1,4 +1,4 @@
-import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "cdda-schema";
+import { DamageType, DamageTypeID, Effect, EffectID, Eoc, Spell } from "@sosarciel-cdda/sclema";
 import { genDIO } from "./UtilGener";
 import { EMDef, MAX_NUM } from "@src/EMDefine";
 import { DataManager } from "cdda-event";

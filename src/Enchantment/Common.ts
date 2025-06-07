@@ -2,7 +2,7 @@ import { DataManager } from "cdda-event";
 import { EffectActiveCond, EffectActiveCondList, EffectActiveCondSearchDataMap, EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
 import { JObject } from "@zwa73/utils";
 import { EMDef } from "@src/EMDefine";
-import { AnyObj, BoolObj, Color, EocEffect, EocID, Flag, FlagID, NumObj } from "cdda-schema";
+import { AnyObj, BoolObj, Color, EocEffect, EocID, Flag, FlagID, NumObj } from "@sosarciel-cdda/sclema";
 
 
 

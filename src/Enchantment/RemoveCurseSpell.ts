@@ -1,6 +1,6 @@
 import { JObject } from "@zwa73/utils";
 import { DataManager } from "cdda-event";
-import { AnyItemFlag, Spell } from "cdda-schema";
+import { AnyItemFlag, Spell } from "@sosarciel-cdda/sclema";
 import { IS_CURSED_FLAG_ID, REMOVE_CURSE_EOC_ID } from "./Common";
 import { EMDef } from "@src/EMDefine";
 

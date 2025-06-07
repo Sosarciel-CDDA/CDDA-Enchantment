@@ -1,7 +1,7 @@
 import { EMDef } from "@src/EMDefine";
 import { JObject } from "@zwa73/utils";
 import { DataManager } from "cdda-event";
-import { Eoc, Spell } from "cdda-schema";
+import { Eoc, Spell } from "@sosarciel-cdda/sclema";
 import { ITEM_ENCH_TYPE, IDENTIFY_EOC_ID, INIT_ENCH_DATA_EOC_ID, IS_IDENTIFYED_FLAG_ID } from "./Common";
 import { EnchTypeSearchDataMap, VaildEnchTypeList } from "./EnchInterface";
 

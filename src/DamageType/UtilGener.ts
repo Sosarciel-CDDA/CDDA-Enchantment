@@ -1,5 +1,5 @@
 
-import { Armor, BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID } from "cdda-schema";
+import { Armor, BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID } from "@sosarciel-cdda/sclema";
 import { EMDef } from "@src/EMDefine";
 import { GlobalHook, DataManager } from "cdda-event";
 

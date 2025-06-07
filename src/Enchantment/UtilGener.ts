@@ -1,6 +1,6 @@
 import { EMDef } from "@src/EMDefine";
 import { CharHook, DataManager } from "cdda-event";
-import { BoolObj, Color, ColorList, EocEffect, Flag, FlagID, MessageRatType } from "cdda-schema";
+import { BoolObj, Color, ColorList, EocEffect, Flag, FlagID, MessageRatType } from "@sosarciel-cdda/sclema";
 import { EnchData } from "./EnchInterface";
 import { enchLvlID } from "./Common";
 
