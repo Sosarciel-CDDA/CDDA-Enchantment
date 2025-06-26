@@ -2,7 +2,7 @@ import { MissionDefinition, MissionDefinitionID, OMTMatchType } from "@sosarciel
 
 import { JObject } from "@zwa73/utils";
 import { BoolObj, Eoc, EocID, Spell, SpellID, OvermapTerrainID, OverMapSpecialID } from "@sosarciel-cdda/schema";
-import { DataManager } from ""@sosarciel-cdda/event";
+import { DataManager } from "@sosarciel-cdda/event";
 
 
 
