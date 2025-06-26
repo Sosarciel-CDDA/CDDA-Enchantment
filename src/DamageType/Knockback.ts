@@ -71,7 +71,7 @@ export async function Knockback(dm:DataManager){
         effect:[
             {u_message:`${dname} 触发 <context_val:total_damage> <context_val:damage_taken>`},
             {math:[tmddmg,"=","_total_damage"]},
-            {run_eoc_until:{
+            {run_eocs:{
                 id:EMDef.genEOCID(`${did}_OnDamage_each`),
                 eoc_type:"ACTIVATION",
                 effect:[

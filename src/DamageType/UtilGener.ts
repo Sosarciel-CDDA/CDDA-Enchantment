@@ -1,5 +1,5 @@
 
-import { Armor, BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID } from "@sosarciel-cdda/schema";
+import { BoolObj, DamageInfoOrder, DamageType, Eoc, EocEffect, Mutation, MutationID, Spell, Time, Effect, EffectID, Item } from "@sosarciel-cdda/schema";
 import { EMDef } from "@src/EMDefine";
 import { GlobalHook, DataManager } from "@sosarciel-cdda/event";
 
@@ -71,7 +71,7 @@ export function genAddEffEoc(effectID:EffectID,duration: (Time), eocEffects?:Eoc
 /**修改护甲 并生成添加护甲的变异 
  * ID为`${armor.id}_MUT`
  */
-export function genArmorMut(armor:Armor){
+export function genArmorMut(armor:Item){
     armor.flags?.push(
         "UNBREAKABLE"           ,//不会损坏
         "INTEGRATED"            ,//自体护甲

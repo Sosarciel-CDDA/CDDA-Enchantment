@@ -1,6 +1,6 @@
 import { DataManager } from "@sosarciel-cdda/event";
 import { JObject } from "@zwa73/utils";
-import { EocID, Flag, Generic } from "@sosarciel-cdda/schema";
+import { EocID, Flag, Item } from "@sosarciel-cdda/schema";
 import { EMDef } from "@src/EMDefine";
 import { INIT_ENCH_DATA_EOC_ID, auxEID } from "./Common";
 
@@ -25,9 +25,10 @@ export async function debugItem(dm:DataManager,enchFlagList:Flag[]){
     ] as const;
     out.push(...enchTestList.map((item)=>item[0]));
 
-    const EnchTestTool:Generic = {
-        id:EMDef.genGenericID("EnchTestTool"),
-        type:"GENERIC",
+    const EnchTestTool:Item = {
+        id:EMDef.genItemID("EnchTestTool"),
+        type:"ITEM",
+        "//GENERIC":true,
         name:{str_sp:"附魔调试工具"},
         description:"附魔调试工具",
         weight:0,

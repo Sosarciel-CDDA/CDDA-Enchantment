@@ -23,7 +23,7 @@ export async function identifySpell(dm:DataManager){
                 {if:{and:[
                     {math:["_identSpellCount",">=","1"]},
                     {not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}},
-                    {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))}
+                    {or:VaildEnchTypeList.map(cate=>({compare_string:[{npc_val:ITEM_ENCH_TYPE},cate]}))}
                 ]},
                 then:[
                     {run_eocs:IDENTIFY_EOC_ID},

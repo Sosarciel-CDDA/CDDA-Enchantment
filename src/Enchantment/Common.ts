@@ -195,12 +195,9 @@ function auxEoc(enchDataList:EnchData[]){
                     {npc_has_flag:lvlobj.ench.id},
                 ]}},
                 //符合类型
-                {or:[
-                    ...(data.ench_type.map((t)=>({
-                        npc_has_var: ITEM_ENCH_TYPE,
-                        value: t,
-                    })))
-                ]},
+                {or:data.ench_type.map(t=>({
+                    compare_string:[{npc_val:ITEM_ENCH_TYPE}, t]
+                }))},
                 //排除自体护甲与生化武器
                 {not:{or:[
                     {npc_has_flag:"BIONIC_WEAPON"   },//生化武器
@@ -261,7 +258,7 @@ function identifyEoc(enchDataList:EnchData[]){
     const identifyCond:BoolObj = {and:[
         {not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}},
         {math:[N_COMPLETE_ENCH_INIT,"==",'1']},
-        {or:VaildEnchTypeList.map((cate)=>({npc_has_var:ITEM_ENCH_TYPE,value:cate}))},
+        {or:VaildEnchTypeList.map(cate=>({compare_string:[{npc_val:ITEM_ENCH_TYPE}, cate]}))},
     ]}
     const subeocid = EMDef.genEOCID('IdentifyEnch_each');
     //鉴定主EOC
