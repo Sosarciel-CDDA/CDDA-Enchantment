@@ -1,16 +1,11 @@
 import { DataManager } from "@sosarciel-cdda/event";
-import { UtilFT } from '@zwa73/utils'
 import * as path from 'path';
 import { createDamageType } from "./DamageType";
 import { createEnchantment } from "./Enchantment";
-
-
-
+import { GAME_MOD_DIR } from "@sosarciel-cdda/schema";
 
 const dataPath = path.join(process.cwd(),'data');
-const envPath = path.join(process.cwd(),'..');
-const gamePath = (UtilFT.loadJSONFileSync(path.join(envPath,'build_setting.json')) as any).game_path as string;
-const outPath = path.join(gamePath,'data','mods','CustomEnch');
+const outPath = path.join(GAME_MOD_DIR,'CustomEnch');
 
 async function main(){
     const EnchDm = new DataManager(dataPath,outPath,"CENCHEF",{enableMoveStatus:false});
