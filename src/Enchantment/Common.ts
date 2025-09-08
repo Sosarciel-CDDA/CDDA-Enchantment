@@ -1,8 +1,8 @@
 import { DataManager } from "@sosarciel-cdda/event";
-import { EffectActiveCond, EffectActiveCondList, EffectActiveCondSearchDataMap, EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
+import { EffectActiveCondList, EffectActiveCondSearchDataMap, EnchData, EnchTypeSearchDataMap, VaildEnchType, VaildEnchTypeList } from "./EnchInterface";
 import { JObject } from "@zwa73/utils";
 import { EMDef } from "@src/EMDefine";
-import { AnyObj, BoolObj, Color, EocEffect, EocID, Flag, FlagID, NumObj } from "@sosarciel-cdda/schema";
+import { BoolExpr, EocEffect, EocID, Flag, FlagID, NumberExpr } from "@sosarciel-cdda/schema";
 
 
 
@@ -237,7 +237,7 @@ function identifyEoc(enchDataList:EnchData[]){
     const noneEnchEoc = EMDef.genActEoc("NoneEnch",[]);
 
     //根据随机权重生成 附魔类别 : weight_list_eoc数据 表单
-    const weightListMap:Record<VaildEnchType,[EocID,NumObj][]> = {} as any;
+    const weightListMap:Record<VaildEnchType,[EocID,NumberExpr][]> = {} as any;
     //初始化表单数组
     VaildEnchTypeList.forEach((et)=>weightListMap[et]=[]);
     //遍历附魔类别与附魔数据表
@@ -255,7 +255,7 @@ function identifyEoc(enchDataList:EnchData[]){
     }
 
     //鉴定条件
-    const identifyCond:BoolObj = {and:[
+    const identifyCond:BoolExpr = {and:[
         {not:{npc_has_flag:IS_IDENTIFYED_FLAG_ID}},
         {math:[N_COMPLETE_ENCH_INIT,"==",'1']},
         {or:VaildEnchTypeList.map(cate=>({compare_string:[{npc_val:ITEM_ENCH_TYPE}, cate]}))},
