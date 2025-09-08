@@ -1,7 +1,7 @@
 import { MissionDefinition, MissionDefinitionID, OMTMatchType } from "@sosarciel-cdda/schema";
 
 import { JObject } from "@zwa73/utils";
-import { BoolObj, Eoc, EocID, Spell, SpellID, OvermapTerrainID, OverMapSpecialID } from "@sosarciel-cdda/schema";
+import { BoolExpr, Eoc, EocID, Spell, SpellID, OvermapTerrainID, OverMapSpecialID } from "@sosarciel-cdda/schema";
 import { DataManager } from "@sosarciel-cdda/event";
 
 
@@ -246,7 +246,7 @@ export async function createDivinationSpell(dm:DataManager){
             out.push(subeoc);
             subeocIdList.push(subeoc.id);
         }else{
-            const cond: (BoolObj)[] = [{not:{u_has_mission:miss.id}}];
+            const cond: (BoolExpr)[] = [{not:{u_has_mission:miss.id}}];
             if(mod_is_loaded)
                 cond.push({mod_is_loaded});
             const subeoc:Eoc={
