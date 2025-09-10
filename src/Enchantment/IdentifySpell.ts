@@ -17,7 +17,7 @@ export async function identifySpell(dm:DataManager){
         {math:["_identSpellCount","=",`u_spell_level('${spellId}') / 2 + 1`]},
         {u_run_inv_eocs:"all",
         true_eocs:{
-            id:EMDef.genEOCID("RandIdebtify_eoc_sub"),
+            id:EMDef.genEocID("RandIdebtify_eoc_sub"),
             eoc_type:"ACTIVATION",
             effect:[
                 {if:{and:[

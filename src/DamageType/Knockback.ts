@@ -67,12 +67,12 @@ export async function Knockback(dm:DataManager){
     const onDmgEoc:Eoc={
         type:"effect_on_condition",
         eoc_type:"ACTIVATION",
-        id:EMDef.genEOCID(`${did}_OnDamage`),
+        id:EMDef.genEocID(`${did}_OnDamage`),
         effect:[
             {u_message:`${dname} 触发 <context_val:total_damage> <context_val:damage_taken>`},
             {math:[tmddmg,"=","_total_damage"]},
             {run_eocs:{
-                id:EMDef.genEOCID(`${did}_OnDamage_each`),
+                id:EMDef.genEocID(`${did}_OnDamage_each`),
                 eoc_type:"ACTIVATION",
                 effect:[
                     {npc_location_variable:{context_val:"tmp_knockback_loc"}},

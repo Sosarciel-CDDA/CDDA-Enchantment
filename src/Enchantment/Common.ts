@@ -32,7 +32,7 @@ export const IS_ENCHED_FLAG_ID = EMDef.genFlagID("IS_ENCHED");
 /**辅助eoc的id 对 beta 增减某个附魔 */
 export function auxEID(flag:Flag|FlagID,t:"add"|"remove"){
     const id = typeof flag == "string" ? flag:flag.id;
-    return EMDef.genEOCID(`${id}_${t}`);
+    return EMDef.genEocID(`${id}_${t}`);
 }
 /**附魔强度id */
 export function enchInsVar(ench:EnchData,t:"u"|"n"){
@@ -48,18 +48,18 @@ export function enchLvlID(baseID:string,lvl:number){
  * 随机添加附魔  
  * u为角色 n为物品  
  */
-export const IDENTIFY_EOC_ID = EMDef.genEOCID("IdentifyEnch");
+export const IDENTIFY_EOC_ID = EMDef.genEocID("IdentifyEnch");
 /**刷新附魔缓存EocID  
  * u为角色 n不存在  
  */
-export const UPGRADE_ENCH_CACHE_EOC_ID = EMDef.genEOCID("UpgradeEnchCache");
+export const UPGRADE_ENCH_CACHE_EOC_ID = EMDef.genEocID("UpgradeEnchCache");
 /**初始化附魔数据  
  * 在尝试添加附魔前需运行  
  * u为角色 n不存在  
  */
-export const INIT_ENCH_DATA_EOC_ID = EMDef.genEOCID("InitEnchData");
+export const INIT_ENCH_DATA_EOC_ID = EMDef.genEocID("InitEnchData");
 /**移除诅咒EocID */
-export const REMOVE_CURSE_EOC_ID = EMDef.genEOCID("RemoveCurse");
+export const REMOVE_CURSE_EOC_ID = EMDef.genEocID("RemoveCurse");
 
 export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
     const out:JObject[]=[
@@ -85,7 +85,7 @@ export async function prepareProc(dm:DataManager,enchDataList:EnchData[]) {
                 search_data:EffectActiveCondSearchDataMap[cond],
                 true_eocs:{
                     eoc_type:"ACTIVATION",
-                    id:EMDef.genEOCID(`SumEnchCache_${cond}`),
+                    id:EMDef.genEocID(`SumEnchCache_${cond}`),
                     effect:[
                         //遍历附魔
                         ...enchDataList.map((ench)=>
@@ -260,7 +260,7 @@ function identifyEoc(enchDataList:EnchData[]){
         {math:[N_COMPLETE_ENCH_INIT,"==",'1']},
         {or:VaildEnchTypeList.map(cate=>({compare_string:[{npc_val:ITEM_ENCH_TYPE}, cate]}))},
     ]}
-    const subeocid = EMDef.genEOCID('IdentifyEnch_each');
+    const subeocid = EMDef.genEocID('IdentifyEnch_each');
     //鉴定主EOC
     const identifyEnchEoc = EMDef.genActEoc(IDENTIFY_EOC_ID,[
         {if:{one_in_chance:ENCH_ONE_IN},
@@ -316,7 +316,7 @@ function initEnchDataEoc(enchDataList:EnchData[]){
         u_run_inv_eocs:"all",
         search_data:[...EnchTypeSearchDataMap[t]],
         true_eocs:{
-            id:EMDef.genEOCID(`initEnchData_${t}`),
+            id:EMDef.genEocID(`initEnchData_${t}`),
             eoc_type:"ACTIVATION",
             effect:[
                 {npc_add_var:ITEM_ENCH_TYPE,value:t},

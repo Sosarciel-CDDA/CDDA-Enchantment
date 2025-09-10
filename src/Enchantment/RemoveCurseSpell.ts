@@ -15,7 +15,7 @@ export async function removeCurseSpell(dm:DataManager){
         {math:["_removeCurseSpellCount","=",`u_spell_level('${spellId}') / 4 + 1`]},
         {u_run_inv_eocs:"all",
         true_eocs:{
-            id:EMDef.genEOCID("RandIdebtify_eoc_sub"),
+            id:EMDef.genEocID("RandIdebtify_eoc_sub"),
             eoc_type:"ACTIVATION",
             effect:[
                 {if:{and:[
@@ -53,7 +53,7 @@ export async function removeCurseSpell(dm:DataManager){
         search_data:[{flags:[IS_CURSED_FLAG_ID as AnyItemFlag]}],
         true_eocs:{
             eoc_type:"ACTIVATION",
-            id:EMDef.genEOCID("SelRemoveCurse_eoc_sub"),
+            id:EMDef.genEocID("SelRemoveCurse_eoc_sub"),
             effect:[{run_eocs:REMOVE_CURSE_EOC_ID}]
         }
     }]);

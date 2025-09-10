@@ -42,7 +42,7 @@ export async function Trauma(dm:DataManager){
     const onDmgEoc:Eoc={
         type:"effect_on_condition",
         eoc_type:"ACTIVATION",
-        id:EMDef.genEOCID(`${did}_OnDamage`),
+        id:EMDef.genEocID(`${did}_OnDamage`),
         effect:[
             //regenDmg,
             {u_message:"创伤触发 <context_val:total_damage> <context_val:damage_taken>"},
@@ -91,7 +91,7 @@ export async function Laceration(dm:DataManager){
     const onDmgEoc:Eoc={
         type:"effect_on_condition",
         eoc_type:"ACTIVATION",
-        id:EMDef.genEOCID(`${did}_OnDamage`),
+        id:EMDef.genEocID(`${did}_OnDamage`),
         effect:[
             //regenDmg,
             {u_message:"撕裂触发 <context_val:total_damage> <context_val:damage_taken>"},

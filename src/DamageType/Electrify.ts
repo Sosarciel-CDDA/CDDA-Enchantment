@@ -20,7 +20,7 @@ export async function Electrify(dm:DataManager){
     const onDmgEoc:Eoc={
         type:"effect_on_condition",
         eoc_type:"ACTIVATION",
-        id:EMDef.genEOCID(`${did}_OnDamage`),
+        id:EMDef.genEocID(`${did}_OnDamage`),
         effect:[
             //regenDmg,
             {u_message:"感电触发 <context_val:total_damage> <context_val:damage_taken>"},
@@ -72,7 +72,7 @@ export async function Discharge(dm:DataManager){
     const onDmgEoc:Eoc={
         type:"effect_on_condition",
         eoc_type:"ACTIVATION",
-        id:EMDef.genEOCID(`${did}_OnDamage`),
+        id:EMDef.genEocID(`${did}_OnDamage`),
         effect:[
             //regenDmg,
             {u_message:"放电触发 <context_val:total_damage> <context_val:damage_taken>"},

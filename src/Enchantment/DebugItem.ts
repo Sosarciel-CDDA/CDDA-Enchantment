@@ -41,7 +41,7 @@ export async function debugItem(dm:DataManager,enchFlagList:Flag[]){
             menu_text:"附魔调试",
             effect_on_conditions:[{
                 eoc_type:"ACTIVATION",
-                id:EMDef.genEOCID("EnchTestTool"),
+                id:EMDef.genEocID("EnchTestTool"),
                 effect:[{
                     u_run_inv_eocs:"manual",
                     title:"选择需要调试的物品",
